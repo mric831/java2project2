@@ -42,17 +42,17 @@ public class ManagedIncidentTest {
 	}
 
 	@Test
-	public void testGetPriority() {
+	public void testGetPriorityString() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void testGetOnHoldReason() {
+	public void testGetOnHoldReasonString() {
 		fail("Not yet implemented");
 	}
 
 	@Test
-	public void testGetCancellationCode() {
+	public void testGetCancellationCodeString() {
 		fail("Not yet implemented");
 	}
 
