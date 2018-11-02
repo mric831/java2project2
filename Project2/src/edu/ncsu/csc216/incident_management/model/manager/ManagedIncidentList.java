@@ -1,7 +1,7 @@
 package edu.ncsu.csc216.incident_management.model.manager;
 
 import java.util.ArrayList;
-
+import java.util.List;
 
 import edu.ncsu.csc216.incident.xml.Incident;
 import edu.ncsu.csc216.incident_management.model.command.Command;
@@ -10,7 +10,7 @@ import edu.ncsu.csc216.incident_management.model.incident.ManagedIncident.Catego
 import edu.ncsu.csc216.incident_management.model.incident.ManagedIncident.Priority;
 
 public class ManagedIncidentList {
-	private ArrayList<ManagedIncident> incidents;
+	private List<ManagedIncident> incidents;
 	
 	public ManagedIncidentList() {
 		
@@ -24,11 +24,11 @@ public class ManagedIncidentList {
 		
 	}
 	
-	public ArrayList<ManagedIncident> getManagedIncidents(){
+	public List<ManagedIncident> getManagedIncidents(){
 		return null;
 	}
 	
-	public ArrayList<ManagedIncident> getIncidentsByCategory(Category c){
+	public List<ManagedIncident> getIncidentsByCategory(Category c){
 		return null;
 	}
 	
