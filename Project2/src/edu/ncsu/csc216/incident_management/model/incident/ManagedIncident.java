@@ -150,5 +150,101 @@ public class ManagedIncident {
 	public static void setCounter(int i ) {
 		
 	}
+	
+	public class OnHoldState implements IncidentState {
+
+		@Override
+		public void updateState(Command command) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public String getStateName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+	}
+	
+	public class ResolvedState implements IncidentState {
+
+		@Override
+		public void updateState(Command command) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public String getStateName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+	}
+	
+	public class NewState implements IncidentState {
+
+		@Override
+		public void updateState(Command command) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public String getStateName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+	}
+	
+	public class InProgressState implements IncidentState{
+
+		@Override
+		public void updateState(Command command) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public String getStateName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+	}
+	
+	public class ClosedState implements IncidentState {
+
+		@Override
+		public void updateState(Command command) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public String getStateName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+	}
+
+	public class CanceledState implements IncidentState {
+
+		@Override
+		public void updateState(Command command) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		public String getStateName() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+	}
 
 }
