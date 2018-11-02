@@ -20,7 +20,7 @@ public class ManagedIncidentList {
 		return 0;
 	}
 	
-	public void addXMLIncidents(ArrayList<Incident> list) {
+	public void addXMLIncidents(List<Incident> list) {
 		
 	}
 	
