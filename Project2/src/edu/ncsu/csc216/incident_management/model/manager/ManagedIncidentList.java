@@ -2,13 +2,15 @@ package edu.ncsu.csc216.incident_management.model.manager;
 
 import java.util.ArrayList;
 
+
+import edu.ncsu.csc216.incident.xml.Incident;
 import edu.ncsu.csc216.incident_management.model.command.Command;
-import edu.ncsu.csc216.incident_management.model.incident.Category;
 import edu.ncsu.csc216.incident_management.model.incident.ManagedIncident;
-import edu.ncsu.csc216.incident_management.model.incident.Priority;
+import edu.ncsu.csc216.incident_management.model.incident.ManagedIncident.Category;
+import edu.ncsu.csc216.incident_management.model.incident.ManagedIncident.Priority;
 
 public class ManagedIncidentList {
-	private ArrayList incidents;
+	private ArrayList<ManagedIncident> incidents;
 	
 	public ManagedIncidentList() {
 		

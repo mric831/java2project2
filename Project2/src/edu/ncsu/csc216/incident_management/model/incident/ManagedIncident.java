@@ -2,16 +2,17 @@ package edu.ncsu.csc216.incident_management.model.incident;
 
 import java.util.ArrayList;
 
-import edu.ncsu.csc216.incident_management.model.command.CancellationCode;
+import edu.ncsu.csc216.incident.xml.Incident;
+
 import edu.ncsu.csc216.incident_management.model.command.Command;
-import edu.ncsu.csc216.incident_management.model.command.OnHoldReason;
-import edu.ncsu.csc216.incident_management.model.command.ResolutionCode;
+
 
 public class ManagedIncident {
 	public static final String C_INQUIRY = "Inquiry";
 	public static final String C_SOFTWARE = "Software";
 	public static final String C_HARDWARE = "Hardware";
 	public static final String C_DATABASE = "Database";
+	public static final String C_NETWORK = "Network";
 	public static final String P_URGENT = "Urgent";
 	public static final String P_HIGH = "High";
 	public static final String P_MEDIUM = "Medium";
@@ -29,10 +30,10 @@ public class ManagedIncident {
 	public static final String CLOSED_NAME = "Closed";
 	public static final String CANCELED_NAME = "Canceled";
 	private static int counter = 0;
-	private Priority priority;
-	private CancellationCode cancellationCode;
-	private ResolutionCode resolutionCode;
-	private OnHoldReason onHoldReason;
+	public enum Priority { URGENT, HIGH, MEDIUM, LOW}
+	public enum CancellationCode { DUPLICATE, UNNECESSARY, NOT_AN_INCIDENT }
+	public enum ResolutionCode { PERMANENTLY_SOLVED, WORKAROUND, NOT_SOLVED, CALLER_CLOSED }
+	public enum OnHoldReason { AWAITING_CALLER, AWAITING_CHANGE, AWAITING_VENDOR }
 	private IncidentState newState;
 	private IncidentState state;
 	private IncidentState resolvedState;
@@ -40,7 +41,7 @@ public class ManagedIncident {
 	private IncidentState closedState;
 	private IncidentState inProgressState;
 	private IncidentState canceledState;
-	private Category category;
+	public enum Category { INQUIRY, SOFTWARE, HARDWARE, NETWORK, DATABASE }
 	
 	public ManagedIncident(String s, Category c, Priority p, String a, String b) {
 		
@@ -74,7 +75,7 @@ public class ManagedIncident {
 		
 	}
 	
-	public String getPriority() {
+	public String getPriorityString() {
 		return null;
 	}
 	
@@ -82,7 +83,7 @@ public class ManagedIncident {
 		
 	}
 	
-	public String getOnHoldReason() {
+	public String getOnHoldReasonString() {
 		return null;
 	}
 	
@@ -90,7 +91,7 @@ public class ManagedIncident {
 		
 	}
 	
-	public String getCancellationCode() {
+	public String getCancellationCodeString() {
 		return null;
 	}
 	

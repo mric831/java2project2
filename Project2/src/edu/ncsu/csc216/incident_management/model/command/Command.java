@@ -13,10 +13,10 @@ public class Command {
 	public static final String CC_NOT_AN_INCIDENT = "Not an Incident";
 	private String ownerId;
 	private String note;
-	private CommandValue c;
-	private OnHoldReason onHoldReason;
-	private ResolutionCode resolutionCode;
-	private CancellationCode cancellationCode;
+	public enum CommandValue { INVESTIGATE, HOLD, RESOLVE, CONFIRM, REOPEN, CANCEL }
+	public enum OnHoldReason { AWAITING_CALLER, AWAITING_CHANGE, AWAITING_VENDOR }
+	public enum ResolutionCode { PERMANENTLY_SOLVED, WORKAROUND, NOT_SOLVED, CALLER_CLOSED }
+	public enum CancellationCode { DUPLICATE, UNNECESSARY, NOT_AN_INCIDENT }
 	
 	public Command(CommandValue v, String id, OnHoldReason o, ResolutionCode r, CancellationCode c, String note) {
 		

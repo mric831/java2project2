@@ -1,9 +1,10 @@
 package edu.ncsu.csc216.incident_management.model.manager;
 
 import edu.ncsu.csc216.incident_management.model.command.Command;
-import edu.ncsu.csc216.incident_management.model.incident.Category;
 import edu.ncsu.csc216.incident_management.model.incident.ManagedIncident;
-import edu.ncsu.csc216.incident_management.model.incident.Priority;
+import edu.ncsu.csc216.incident_management.model.incident.ManagedIncident.Category;
+import edu.ncsu.csc216.incident_management.model.incident.ManagedIncident.Priority;
+
 
 public class IncidentManager {
 	
@@ -34,7 +35,7 @@ public class IncidentManager {
 	public String[][] getManagedIncidentsAsArray(){
 		return null;
 	}
-	
+	                
 	public String[][] getManagedIncidentsAsArrayByCategory(Category c){
 		return null;
 	}
