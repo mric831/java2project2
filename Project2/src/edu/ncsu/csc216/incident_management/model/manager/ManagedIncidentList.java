@@ -10,7 +10,7 @@ import edu.ncsu.csc216.incident_management.model.incident.ManagedIncident.Catego
 import edu.ncsu.csc216.incident_management.model.incident.ManagedIncident.Priority;
 
 public class ManagedIncidentList {
-	private List<ManagedIncident> incidents;
+	private List<Incident> incidents;
 	
 	public ManagedIncidentList() {
 		
