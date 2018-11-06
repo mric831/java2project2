@@ -64,6 +64,8 @@ public class ManagedIncident {
 	public enum ResolutionCode { PERMANENTLY_SOLVED, WORKAROUND, NOT_SOLVED, CALLER_CLOSED }
 	/** All possible on hold reasons */
 	public enum OnHoldReason { AWAITING_CALLER, AWAITING_CHANGE, AWAITING_VENDOR }
+	/** All possible categories */
+	public enum Category { INQUIRY, SOFTWARE, HARDWARE, NETWORK, DATABASE }
 	/** New state */
 	private IncidentState newState;
 	/** Current state */
@@ -78,8 +80,16 @@ public class ManagedIncident {
 	private IncidentState inProgressState;
 	/** Canceled state */
 	private IncidentState canceledState;
-	/** All possible categories */
-	public enum Category { INQUIRY, SOFTWARE, HARDWARE, NETWORK, DATABASE }
+	/** Priority of the incident */
+	private Priority priority;
+	/** Cancellation code of the incident */
+	private CancellationCode cancellationCode;
+	/** Resolution code of the incident */
+	private ResolutionCode resolutionCode;
+	/** On hold reason of the incident */
+	private OnHoldReason onHoldReason;
+	/** Category of the incident */
+	private Category category;
 	/**
 	 * ManagedIncident constructor from parameters
 	 * @param caller the person calling in the incident
@@ -89,20 +99,42 @@ public class ManagedIncident {
 	 * @param workNote the note describing the incident
 	 */
 	public ManagedIncident(String caller, Category c, Priority p, String name, String workNote) {
-		
+		if(caller == null || caller.equals("")) {
+			throw new IllegalArgumentException();
+		} else if(c == null) {
+			throw new IllegalArgumentException();
+		} else if(p == null) {
+			throw new IllegalArgumentException();
+		} else if(name == null || name.equals("")) {
+			throw new IllegalArgumentException();
+		} else if(workNote == null || workNote.equals("")) {
+			throw new IllegalArgumentException();
+		}
+		this.incidentId = counter;
+		incrementCounter();
+		this.caller = caller;
+		this.category = c;
+		this.priority = p;
+		this.name = name;
+		this.notes.add(workNote);
+		this.cancellationCode = null;
+		this.resolutionCode = null;
+		this.onHoldReason = null;
+		this.owner = null;
+		this.changeRequest = null;
 	}
 	/**
 	 * Constructor for Managed incidents when given an incident
 	 * @param i the incident to create as a managed incident
 	 */
 	public ManagedIncident(Incident i) {
-		
+		/////////////
 	}
 	/**
 	 * Increments the counter variable
 	 */
 	public static void incrementCounter() {
-		
+		counter++;
 	}
 	/**
 	 * Gets the id of this instance of incident
@@ -294,7 +326,7 @@ public class ManagedIncident {
 		@Override
 		public String getStateName() {
 			// TODO Auto-generated method stub
-			return null;
+			return "OnHold";
 		}
 
 	}
@@ -320,7 +352,7 @@ public class ManagedIncident {
 		@Override
 		public String getStateName() {
 			// TODO Auto-generated method stub
-			return null;
+			return "Resolved";
 		}
 
 	}
@@ -346,7 +378,7 @@ public class ManagedIncident {
 		@Override
 		public String getStateName() {
 			// TODO Auto-generated method stub
-			return null;
+			return "New";
 		}
 
 	}
@@ -372,7 +404,7 @@ public class ManagedIncident {
 		@Override
 		public String getStateName() {
 			// TODO Auto-generated method stub
-			return null;
+			return "In Progress";
 		}
 
 	}
@@ -398,7 +430,7 @@ public class ManagedIncident {
 		@Override
 		public String getStateName() {
 			// TODO Auto-generated method stub
-			return null;
+			return "Closed";
 		}
 
 	}
@@ -423,8 +455,7 @@ public class ManagedIncident {
 		 */
 		@Override
 		public String getStateName() {
-			// TODO Auto-generated method stub
-			return null;
+			return "Canceled";
 		}
 
 	}
