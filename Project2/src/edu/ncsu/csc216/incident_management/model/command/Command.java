@@ -37,6 +37,14 @@ public class Command {
 	public enum ResolutionCode { PERMANENTLY_SOLVED, WORKAROUND, NOT_SOLVED, CALLER_CLOSED }
 	/** Possible codes for an incident to be cancelled */
 	public enum CancellationCode { DUPLICATE, UNNECESSARY, NOT_AN_INCIDENT }
+	/** The command value of the command */
+	private CommandValue c;
+	/** Hold reason of the command */
+	private OnHoldReason onHoldReason;
+	/** Resolution code of the command */
+	private ResolutionCode resolutionCode;
+	/** Cancellation code of the command */
+	private CancellationCode cancellationCode;
 	/**
 	 * Constructor for command objects
 	 * @param v CommandValue of the command object
@@ -47,48 +55,74 @@ public class Command {
 	 * @param note Note describing the incident
 	 */
 	public Command(CommandValue v, String id, OnHoldReason o, ResolutionCode r, CancellationCode c, String note) {
-		
+		if(v == null) {
+			throw new IllegalArgumentException();
+		} else if(note == null || note.equals("")) {
+			throw new IllegalArgumentException();
+		} else if(v.equals(CommandValue.INVESTIGATE)) {
+			if(id == null || id.equals("")) {
+				throw new IllegalArgumentException();
+			}
+		} else if(v.equals(CommandValue.HOLD)) {
+			if(o == null) {
+				throw new IllegalArgumentException();
+			}
+		} else if(v.equals(CommandValue.RESOLVE)) {
+			if(r == null) {
+				throw new IllegalArgumentException();
+			}
+		} else if(v.equals(CommandValue.CANCEL)) {
+			if(c == null) {
+				throw new IllegalArgumentException();
+			}
+		}
+		this.c = v;
+		this.ownerId = id;
+		this.onHoldReason = o;
+		this.resolutionCode = r;
+		this.cancellationCode = c;
+		this.note = note;
 	}
 	/**
 	 * Gets the command value of the Command object
 	 * @return the action the command object is taking
 	 */
 	public CommandValue getCommand() {
-		return null;
+		return c;
 	}
 	/**
 	 * Gets the id of the command owner
 	 * @return the owner's id
 	 */
 	public String getOwnerId() {
-		return null;
+		return ownerId;
 	}
 	/**
 	 * Gets the code to resolve the incident
 	 * @return resolution code
 	 */
 	public ResolutionCode getResolutionCode() {
-		return null;
+		return resolutionCode;
 	}
 	/**
 	 * Gets the not associated with the incident
 	 * @return work note
 	 */
 	public String getWorkNote() {
-		return null;
+		return note;
 	}
 	/**
 	 * Gets the reason the incident is on hold
 	 * @return on hold reason
 	 */
 	public OnHoldReason getOnHoldReason() {
-		return null;
+		return onHoldReason;
 	}
 	/**
 	 * Gets the reason the incident is being cancelled
 	 * @return cancellation code
 	 */
 	public CancellationCode getCancellationCode() {
-		return null;
+		return cancellationCode;
 	}
 }
