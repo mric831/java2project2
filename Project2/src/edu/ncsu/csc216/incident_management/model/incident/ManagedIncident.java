@@ -3,7 +3,7 @@ package edu.ncsu.csc216.incident_management.model.incident;
 import java.util.ArrayList;
 
 import edu.ncsu.csc216.incident.xml.Incident;
-
+import edu.ncsu.csc216.incident.xml.WorkNotes;
 import edu.ncsu.csc216.incident_management.model.command.Command;
 
 /**
@@ -128,8 +128,25 @@ public class ManagedIncident {
 	 * @param i the incident to create as a managed incident
 	 */
 	public ManagedIncident(Incident i) {
-		/////////////
+		this.incidentId = counter;
+		incrementCounter();
+		this.caller = i.getCaller();
+		this.owner = i.getOwner();
+		this.name = i.getName();
+		this.changeRequest = i.getChangeRequest();
+		setCategory(i.getCategory());
+		setPriority(i.getPriority());
+		setOnHoldReason(i.getOnHoldReason());
+		setResolutionCode(i.getResolutionCode());
+		setCancellationCode(i.getCancellationCode());
+		WorkNotes w = i.getWorkNotes();
+		this.notes = (ArrayList<String>) w.getNotes();
+		setState(i.getState());
+		
 	}
+	
+	
+	
 	/**
 	 * Increments the counter variable
 	 */
@@ -141,27 +158,28 @@ public class ManagedIncident {
 	 * @return incident id
 	 */
 	public int getIncidentId() {
-		return 0;
+		return incidentId;
 	}
 	/**
 	 * Get the change string that the incident is attempting
 	 * @return the change that is being requested for the incident
 	 */
 	public String getChangeRequest() {
-		return null;
+		return changeRequest;
 	}
 	/**
 	 * Get the incident's category
 	 * @return the incident's category
 	 */
 	public Category getCategory() {
-		return null;
+		return category;
 	}
 	/**
 	 * Gets the incident's category as a string
 	 * @return the incident's category
 	 */
 	public String getCategoryString() {
+		//////////////////////
 		return null;
 	}
 	/**
@@ -169,13 +187,14 @@ public class ManagedIncident {
 	 * @param s the category to set 
 	 */
 	private void setCategory(String s) {
-		
+		this.category = convertCategory(s);
 	}
 	/**
 	 * Gets the incident's priority as a string
 	 * @return the incident's priority
 	 */
 	public String getPriorityString() {
+		////////////////////
 		return null;
 	}
 	/**
@@ -183,13 +202,14 @@ public class ManagedIncident {
 	 * @param s the priority to set to
 	 */
 	private void setPriority(String s) {
-		
+		this.priority = convertPriority(s);
 	}
 	/**
 	 * Gets the incident's on hold reason as a string
 	 * @return the incident's on hold reason
 	 */
 	public String getOnHoldReasonString() {
+		//////////////////////
 		return null;
 	}
 	/**
@@ -197,13 +217,14 @@ public class ManagedIncident {
 	 * @param s the on hold reason to set
 	 */
 	private void setOnHoldReason(String s) {
-		
+		this.onHoldReason = convertOnHoldReason(s);
 	}
 	/**
 	 * Gets the incident's cancellation code as a string
 	 * @return the incident's cancellation code
 	 */
 	public String getCancellationCodeString() {
+		//////////////////////
 		return null;
 	}
 	/**
@@ -211,34 +232,35 @@ public class ManagedIncident {
 	 * @param s the cancellation code to set
 	 */
 	private void setCancellationCode(String s) {
-		
+		this.cancellationCode = convertCancellationCode(s);
 	}
 	/**
 	 * Gets the current state of the incident
 	 * @return the incident's current state
 	 */
 	public IncidentState getState() {
-		return null;
+		return state;
 	}
 	/**
 	 * Sets the incident's state
 	 * @param s the state to set to
 	 */
 	private void setState(String s) {
-		
+		this.state = convertState(s);
 	}
 	/**
 	 * Gets the incident's resolution code
 	 * @return the incident's resolution code
 	 */
 	public ResolutionCode getResolutionCode() {
-		return null;
+		return resolutionCode;
 	}
 	/**
 	 * Gets the incident's resolution code as a string
 	 * @return the incident's resolution code
 	 */
 	public  String getResolutionCodeString() {
+		/////////////////////////
 		return null;
 	}
 	/**
@@ -246,55 +268,56 @@ public class ManagedIncident {
 	 * @param s the resolution code to set
 	 */
 	private void setResolutionCode(String s) {
-		
+		this.resolutionCode = convertResolutionCode(s);
 	}
 	/**
 	 * Gets the incident's owner
 	 * @return the incident's owner
 	 */
 	public String getOwner() {
-		return null;
+		return owner;
 	}
 	/**
 	 * Gets the incident's name
 	 * @return the incident's name
 	 */
 	public String getName() {
-		return null;
+		return name;
 	}
 	/**
 	 * Gets the incident's caller
 	 * @return the incident's caller
 	 */
 	public String getCaller() {
-		return null;
+		return caller;
 	}
 	/**
 	 * Gets the notes associated with the incident
 	 * @return the incident's notes
 	 */
 	public ArrayList<String> getNotes(){
-		return null;
+		return notes;
 	}
 	/**
 	 * Gets the incident's notes as a string
 	 * @return the incident's notes
 	 */
 	public String getNotesString() {
-		return null;
+		return notes.toString();
 	}
 	/**
 	 * Updates the incident with the given command
 	 * @param c the command to execute
 	 */
 	public void update(Command c) {
-		
+		///////////////
 	}
 	/**
 	 * Gets an incident from xml data
 	 * @return an unmanaged incident
 	 */
 	public Incident getXMLIncident() {
+		/////////////////////
 		return null;
 	}
 	/**
@@ -302,7 +325,93 @@ public class ManagedIncident {
 	 * @param i the value to set the counter to
 	 */
 	public static void setCounter(int i ) {
-		
+		counter = i;
+	}
+	
+	private Category convertCategory(String s) {
+		if(s.equals(C_INQUIRY)) {
+			return Category.INQUIRY;
+		} else if(s.equals(C_SOFTWARE)) {
+			return Category.SOFTWARE;
+		} else if(s.equals(C_HARDWARE)) {
+			return Category.HARDWARE;
+		} else if(s.equals(C_NETWORK)) {
+			return Category.NETWORK;
+		} else if(s.equals(C_DATABASE)) {
+			return Category.DATABASE;
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
+	
+	private Priority convertPriority(String s) {
+		if(s.equals(P_URGENT)) {
+			return Priority.URGENT;
+		} else if(s.equals(P_HIGH)) {
+			return Priority.HIGH;
+		} else if(s.equals(P_MEDIUM)) {
+			return Priority.MEDIUM;
+		} else if(s.equals(P_LOW)) {
+			return Priority.LOW;
+		} else {
+			throw new IllegalArgumentException();
+		}
+	}
+	
+	private OnHoldReason convertOnHoldReason(String s) {
+		if(s.equals("Awaiting Caller")) {
+			return OnHoldReason.AWAITING_CALLER;
+		} else if(s.equals("Awaiting Change")) {
+			return OnHoldReason.AWAITING_CHANGE;
+		} else if(s.equals("Awaiting Vendor")) {
+			return OnHoldReason.AWAITING_VENDOR;
+		} else {
+			return null;
+		}
+	}
+	
+	private ResolutionCode convertResolutionCode(String s) {
+		if(s.equals("Permanently Solved")) {
+			return ResolutionCode.PERMANENTLY_SOLVED;
+		} else if(s.equals("Workaround")) {
+			return ResolutionCode.WORKAROUND;
+		} else if(s.equals("Not Solved")) {
+			return ResolutionCode.NOT_SOLVED;
+		} else if(s.equals("Caller Closed")) {
+			return ResolutionCode.CALLER_CLOSED;
+		} else {
+			return null;
+		}
+	}
+	
+	private CancellationCode convertCancellationCode(String s) {
+		if(s.equals("Duplicate")) {
+			return CancellationCode.DUPLICATE;
+		} else if(s.equals("Unnecessary")) {
+			return CancellationCode.UNNECESSARY;
+		} else if(s.equals("Not An Incident")) {
+			return CancellationCode.NOT_AN_INCIDENT;
+		} else {
+			return null;
+		}
+	}
+	
+	private IncidentState convertState(String s) {
+		if(s.equals(NEW_NAME)) {
+			return newState;
+		} else if(s.equals(IN_PROGRESS_NAME)) {
+			return inProgressState;
+		} else if(s.equals(ON_HOLD_NAME)) {
+			return onHoldState;
+		} else if(s.equals(RESOLVED_NAME)) {
+			return resolvedState;
+		} else if(s.equals(CLOSED_NAME)) {
+			return closedState;
+		} else if(s.equals(CANCELED_NAME)) {
+			return canceledState;
+		} else {
+			throw new IllegalArgumentException();
+		}
 	}
 	/**
 	 * The state of an incident on hold
