@@ -5,6 +5,10 @@ import java.util.ArrayList;
 import edu.ncsu.csc216.incident.xml.Incident;
 import edu.ncsu.csc216.incident.xml.WorkNotes;
 import edu.ncsu.csc216.incident_management.model.command.Command;
+import edu.ncsu.csc216.incident_management.model.command.Command.CancellationCode;
+import edu.ncsu.csc216.incident_management.model.command.Command.CommandValue;
+import edu.ncsu.csc216.incident_management.model.command.Command.OnHoldReason;
+import edu.ncsu.csc216.incident_management.model.command.Command.ResolutionCode;
 
 /**
  * Class that describes the instances and behaviors of Managed Incidents
@@ -58,12 +62,6 @@ public class ManagedIncident {
 	private static int counter = 0;
 	/** All possible priorities */
 	public enum Priority { URGENT, HIGH, MEDIUM, LOW}
-	/** All possible cancellation codes */
-	public enum CancellationCode { DUPLICATE, UNNECESSARY, NOT_AN_INCIDENT }
-	/** All possible resolution codes */
-	public enum ResolutionCode { PERMANENTLY_SOLVED, WORKAROUND, NOT_SOLVED, CALLER_CLOSED }
-	/** All possible on hold reasons */
-	public enum OnHoldReason { AWAITING_CALLER, AWAITING_CHANGE, AWAITING_VENDOR }
 	/** All possible categories */
 	public enum Category { INQUIRY, SOFTWARE, HARDWARE, NETWORK, DATABASE }
 	/** New state */
@@ -179,7 +177,17 @@ public class ManagedIncident {
 	 * @return the incident's category
 	 */
 	public String getCategoryString() {
-		//////////////////////
+		if(category.equals(Category.DATABASE)) {
+			return C_DATABASE;
+		} else if(category.equals(Category.HARDWARE)) {
+			return C_HARDWARE;
+		} else if(category.equals(Category.INQUIRY)) {
+			return C_INQUIRY;
+		} else if(category.equals(Category.NETWORK)) {
+			return C_NETWORK;
+		} else if(category.equals(Category.SOFTWARE)) {
+			return C_SOFTWARE;
+		}
 		return null;
 	}
 	/**
@@ -194,7 +202,15 @@ public class ManagedIncident {
 	 * @return the incident's priority
 	 */
 	public String getPriorityString() {
-		////////////////////
+		if(priority.equals(Priority.HIGH)) {
+			return P_HIGH;
+		} else if(priority.equals(Priority.MEDIUM)) {
+			return P_MEDIUM;
+		} else if(priority.equals(Priority.LOW)) {
+			return P_LOW;
+		} else if(priority.equals(Priority.URGENT)) {
+			return P_URGENT;
+		}
 		return null;
 	}
 	/**
@@ -209,7 +225,13 @@ public class ManagedIncident {
 	 * @return the incident's on hold reason
 	 */
 	public String getOnHoldReasonString() {
-		//////////////////////
+		if(onHoldReason.equals(OnHoldReason.AWAITING_CALLER)) {
+			return Command.OH_CALLER;
+		} else if(onHoldReason.equals(OnHoldReason.AWAITING_CHANGE)) {
+			return Command.OH_CHANGE;
+		} else if(onHoldReason.equals(OnHoldReason.AWAITING_VENDOR)) {
+			return Command.OH_VENDOR;
+		}
 		return null;
 	}
 	/**
@@ -224,7 +246,13 @@ public class ManagedIncident {
 	 * @return the incident's cancellation code
 	 */
 	public String getCancellationCodeString() {
-		//////////////////////
+		if(cancellationCode.equals(CancellationCode.DUPLICATE)) {
+			return Command.CC_DUPLICATE;
+		} else if(cancellationCode.equals(CancellationCode.NOT_AN_INCIDENT)) {
+			return Command.CC_NOT_AN_INCIDENT;
+		} else if(cancellationCode.equals(CancellationCode.UNNECESSARY)) {
+			return Command.CC_UNNECESSARY;
+		}
 		return null;
 	}
 	/**
@@ -260,7 +288,15 @@ public class ManagedIncident {
 	 * @return the incident's resolution code
 	 */
 	public  String getResolutionCodeString() {
-		/////////////////////////
+		if(resolutionCode.equals(ResolutionCode.CALLER_CLOSED)) {
+			return Command.RC_CALLER_CLOSED;
+		} else if(resolutionCode.equals(ResolutionCode.NOT_SOLVED)) {
+			return Command.RC_NOT_SOLVED;
+		} else if(resolutionCode.equals(ResolutionCode.PERMANENTLY_SOLVED)) {
+			return Command.RC_PERMANENTLY_SOLVED;
+		} else if(resolutionCode.equals(ResolutionCode.WORKAROUND)) {
+			return Command.RC_WORKAROUND;
+		}
 		return null;
 	}
 	/**
@@ -310,15 +346,45 @@ public class ManagedIncident {
 	 * @param c the command to execute
 	 */
 	public void update(Command c) {
-		///////////////
+		switch(state.getStateName()) {
+			case NEW_NAME:
+				newState.updateState(c);
+			case IN_PROGRESS_NAME:
+				inProgressState.updateState(c);
+			case ON_HOLD_NAME:
+				onHoldState.updateState(c);
+			case RESOLVED_NAME:
+				resolvedState.updateState(c);
+			case CLOSED_NAME:
+				closedState.updateState(c);
+			case CANCELED_NAME:
+				break;
+				
+		}
 	}
 	/**
 	 * Gets an incident from xml data
 	 * @return an unmanaged incident
 	 */
 	public Incident getXMLIncident() {
-		/////////////////////
-		return null;
+		Incident xml = new Incident();
+		xml.setCaller(caller);
+		xml.setCancellationCode(this.getCancellationCodeString());
+		xml.setCategory(this.getCategoryString());
+		xml.setChangeRequest(changeRequest);
+		xml.setId(incidentId);
+		xml.setName(name);
+		xml.setOnHoldReason(this.getOnHoldReasonString());
+		xml.setOwner(owner);
+		xml.setPriority(this.getPriorityString());
+		xml.setResolutionCode(this.getResolutionCodeString());
+		xml.setState(this.getState().getStateName());
+		WorkNotes w = new WorkNotes();
+		for(int i = 0; i < notes.size(); i++) {
+			w.getNotes().add(notes.get(i));
+		}
+		xml.setWorkNotes(w);
+		return xml;
 	}
 	/**
 	 * Sets the counter to the specified value
@@ -359,11 +425,11 @@ public class ManagedIncident {
 	}
 	
 	private OnHoldReason convertOnHoldReason(String s) {
-		if(s.equals("Awaiting Caller")) {
+		if(s.equals(Command.OH_CALLER)) {
 			return OnHoldReason.AWAITING_CALLER;
-		} else if(s.equals("Awaiting Change")) {
+		} else if(s.equals(Command.OH_CHANGE)) {
 			return OnHoldReason.AWAITING_CHANGE;
-		} else if(s.equals("Awaiting Vendor")) {
+		} else if(s.equals(Command.OH_VENDOR)) {
 			return OnHoldReason.AWAITING_VENDOR;
 		} else {
 			return null;
@@ -371,13 +437,13 @@ public class ManagedIncident {
 	}
 	
 	private ResolutionCode convertResolutionCode(String s) {
-		if(s.equals("Permanently Solved")) {
+		if(s.equals(Command.RC_PERMANENTLY_SOLVED)) {
 			return ResolutionCode.PERMANENTLY_SOLVED;
-		} else if(s.equals("Workaround")) {
+		} else if(s.equals(Command.RC_WORKAROUND)) {
 			return ResolutionCode.WORKAROUND;
-		} else if(s.equals("Not Solved")) {
+		} else if(s.equals(Command.RC_NOT_SOLVED)) {
 			return ResolutionCode.NOT_SOLVED;
-		} else if(s.equals("Caller Closed")) {
+		} else if(s.equals(Command.RC_CALLER_CLOSED)) {
 			return ResolutionCode.CALLER_CLOSED;
 		} else {
 			return null;
@@ -385,11 +451,11 @@ public class ManagedIncident {
 	}
 	
 	private CancellationCode convertCancellationCode(String s) {
-		if(s.equals("Duplicate")) {
+		if(s.equals(Command.CC_DUPLICATE)) {
 			return CancellationCode.DUPLICATE;
-		} else if(s.equals("Unnecessary")) {
+		} else if(s.equals(Command.CC_UNNECESSARY)) {
 			return CancellationCode.UNNECESSARY;
-		} else if(s.equals("Not An Incident")) {
+		} else if(s.equals(Command.CC_NOT_AN_INCIDENT)) {
 			return CancellationCode.NOT_AN_INCIDENT;
 		} else {
 			return null;
@@ -425,7 +491,25 @@ public class ManagedIncident {
 		 */
 		@Override
 		public void updateState(Command command) {
-			// TODO Auto-generated method stub
+			switch(command.getCommand()) {
+				case INVESTIGATE:
+					throw new UnsupportedOperationException();
+				case HOLD:
+					throw new UnsupportedOperationException();
+				case RESOLVE:
+					state = resolvedState;
+					resolutionCode = command.getResolutionCode();
+				case CONFIRM:
+					throw new UnsupportedOperationException();
+				case REOPEN:
+					state = inProgressState;
+				case CANCEL:
+					state = canceledState;
+					cancellationCode = command.getCancellationCode();
+				default:
+					throw new UnsupportedOperationException();
+					
+			}
 			
 		}
 		/**
@@ -434,8 +518,7 @@ public class ManagedIncident {
 		 */
 		@Override
 		public String getStateName() {
-			// TODO Auto-generated method stub
-			return "OnHold";
+			return ON_HOLD_NAME;
 		}
 
 	}
@@ -451,8 +534,27 @@ public class ManagedIncident {
 		 */
 		@Override
 		public void updateState(Command command) {
-			// TODO Auto-generated method stub
-			
+			switch(command.getCommand()) {
+			case INVESTIGATE:
+				throw new UnsupportedOperationException();
+			case HOLD:
+				state = onHoldState;
+				resolutionCode = null;
+			case RESOLVE:
+				throw new UnsupportedOperationException();
+			case CONFIRM:
+				state = closedState;
+			case REOPEN:
+				state = inProgressState;
+				resolutionCode = null;
+			case CANCEL:
+				state = canceledState;
+				resolutionCode = null;
+				cancellationCode = command.getCancellationCode();
+			default:
+				throw new UnsupportedOperationException();
+				
+			}
 		}
 		/**
 		 * Gets the name of the state
@@ -460,8 +562,7 @@ public class ManagedIncident {
 		 */
 		@Override
 		public String getStateName() {
-			// TODO Auto-generated method stub
-			return "Resolved";
+			return RESOLVED_NAME;
 		}
 
 	}
@@ -477,7 +578,25 @@ public class ManagedIncident {
 		 */
 		@Override
 		public void updateState(Command command) {
-			// TODO Auto-generated method stub
+			switch(command.getCommand()) {
+				case INVESTIGATE:
+					state = inProgressState;
+					owner = command.getOwnerId();
+				case HOLD:
+					throw new UnsupportedOperationException();
+				case RESOLVE:
+					throw new UnsupportedOperationException();
+				case CONFIRM:
+					throw new UnsupportedOperationException();
+				case REOPEN:
+					throw new UnsupportedOperationException();
+				case CANCEL:
+					state = canceledState;
+					cancellationCode = command.getCancellationCode();
+				default:
+					throw new UnsupportedOperationException();
+				
+			}
 			
 		}
 		/**
@@ -486,8 +605,7 @@ public class ManagedIncident {
 		 */
 		@Override
 		public String getStateName() {
-			// TODO Auto-generated method stub
-			return "New";
+			return NEW_NAME;
 		}
 
 	}
@@ -503,7 +621,26 @@ public class ManagedIncident {
 		 */
 		@Override
 		public void updateState(Command command) {
-			// TODO Auto-generated method stub
+			switch(command.getCommand()) {
+			case INVESTIGATE:
+				throw new UnsupportedOperationException();
+			case HOLD:
+				state = onHoldState;
+				onHoldReason = command.getOnHoldReason();
+			case RESOLVE:
+				state = resolvedState;
+				resolutionCode = command.getResolutionCode();
+			case CONFIRM:
+				throw new UnsupportedOperationException();
+			case REOPEN:
+				throw new UnsupportedOperationException();
+			case CANCEL:
+				state = canceledState;
+				cancellationCode = command.getCancellationCode();
+			default:
+				throw new UnsupportedOperationException();
+				
+			}
 			
 		}
 		/**
@@ -512,8 +649,7 @@ public class ManagedIncident {
 		 */
 		@Override
 		public String getStateName() {
-			// TODO Auto-generated method stub
-			return "In Progress";
+			return IN_PROGRESS_NAME;
 		}
 
 	}
@@ -529,7 +665,23 @@ public class ManagedIncident {
 		 */
 		@Override
 		public void updateState(Command command) {
-			// TODO Auto-generated method stub
+			switch(command.getCommand()) {
+			case INVESTIGATE:
+				throw new UnsupportedOperationException();
+			case HOLD:
+				throw new UnsupportedOperationException();
+			case RESOLVE:
+				throw new UnsupportedOperationException();
+			case CONFIRM:
+				throw new UnsupportedOperationException();
+			case REOPEN:
+				state = inProgressState;
+			case CANCEL:
+				throw new UnsupportedOperationException();
+			default:
+				throw new UnsupportedOperationException();
+				
+			}
 			
 		}
 		/**
@@ -538,8 +690,7 @@ public class ManagedIncident {
 		 */
 		@Override
 		public String getStateName() {
-			// TODO Auto-generated method stub
-			return "Closed";
+			return CLOSED_NAME;
 		}
 
 	}
@@ -555,7 +706,23 @@ public class ManagedIncident {
 		 */
 		@Override
 		public void updateState(Command command) {
-			// TODO Auto-generated method stub
+			switch(command.getCommand()) {
+			case INVESTIGATE:
+				throw new UnsupportedOperationException();
+			case HOLD:
+				throw new UnsupportedOperationException();
+			case RESOLVE:
+				throw new UnsupportedOperationException();
+			case CONFIRM:
+				throw new UnsupportedOperationException();
+			case REOPEN:
+				throw new UnsupportedOperationException();
+			case CANCEL:
+				throw new UnsupportedOperationException();
+			default:
+				throw new UnsupportedOperationException();
+				
+			}
 			
 		}
 		/**
@@ -564,7 +731,7 @@ public class ManagedIncident {
 		 */
 		@Override
 		public String getStateName() {
-			return "Canceled";
+			return CANCELED_NAME;
 		}
 
 	}
