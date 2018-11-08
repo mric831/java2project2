@@ -1,6 +1,7 @@
 package edu.ncsu.csc216.incident_management.model.manager;
 
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.ncsu.csc216.incident.xml.Incident;
@@ -15,12 +16,13 @@ import edu.ncsu.csc216.incident_management.model.incident.ManagedIncident.Priori
  */
 public class ManagedIncidentList {
 	/** A list of incidents */
-	private List<Incident> incidents;
+	private List<ManagedIncident> incidents;
 	/**
 	 * ManagedIncidentList constructor 
 	 */
 	public ManagedIncidentList() {
-		
+		incidents = new ArrayList<ManagedIncident>();
+		ManagedIncident.setCounter(0);
 	}
 	/**
 	 * Adds an incident with the specified parameters to the list
@@ -32,21 +34,27 @@ public class ManagedIncidentList {
 	 * @return the index in the list the added incident was assigned
 	 */
 	public int addIncident(String caller, Category c, Priority p, String name, String workNote) {
-		return 0;
+		ManagedIncident toAdd = new ManagedIncident(caller, c, p, name, workNote);
+		incidents.add(toAdd);
+		return incidents.get(incidents.size() - 1).getIncidentId();
 	}
 	/**
 	 * Adds incidents to the list from an xml file
 	 * @param list the collection of incidents stored in the xml file
 	 */
 	public void addXMLIncidents(List<Incident> list) {
-		
+		for(int i = 0; i < list.size(); i++) {
+			 ManagedIncident m = new ManagedIncident(list.get(i));
+			 incidents.add(m);
+		}
+		ManagedIncident.setCounter(incidents.get(incidents.size() - 1).getIncidentId() + 1);
 	}
 	/**
 	 * Get the list of managed incidents
 	 * @return
 	 */
 	public List<ManagedIncident> getManagedIncidents(){
-		return null;
+		return incidents;
 	}
 	/**
 	 * Gets a list of managed incidents of the specified category
@@ -54,7 +62,13 @@ public class ManagedIncidentList {
 	 * @return a list of managed incidents that fall under the provided category
 	 */
 	public List<ManagedIncident> getIncidentsByCategory(Category c){
-		return null;
+		List<ManagedIncident> filteredList = new ArrayList<ManagedIncident>();
+		for(int i = 0; i < incidents.size(); i++) {
+			if(incidents.get(i).getCategory().equals(c)) {
+				filteredList.add(incidents.get(i));
+			}
+		}
+		return filteredList;
 	}
 	/**
 	 * Gets a specific incident from the list
@@ -62,6 +76,11 @@ public class ManagedIncidentList {
 	 * @return the incident matching the provided id
 	 */
 	public ManagedIncident getIncidentById(int id) {
+		for(int i = 0; i < incidents.size(); i++) {
+			if(incidents.get(i).getIncidentId() == id) {
+				return incidents.get(i);
+			}
+		}
 		return null;
 	}
 	/**
@@ -70,14 +89,18 @@ public class ManagedIncidentList {
 	 * @param c the command that is going to be enacted on the incident
 	 */
 	public void executeCommand(int id, Command c) {
-		
+		incidents.get(id).update(c);
 	}
 	/**
 	 * Removes the specified incident from the list
 	 * @param id the id of the incident to remove
 	 */
 	public void deleteIncidentById(int id) {
-		
+		for(int i = 0; i < incidents.size(); i++) {
+			if(incidents.get(i).getIncidentId() == id) {
+				incidents.remove(i);
+			}
+		}
 	}
 
 	
