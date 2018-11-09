@@ -114,12 +114,20 @@ public class ManagedIncident {
 		this.category = c;
 		this.priority = p;
 		this.name = name;
-		this.notes.add(workNote);
+		notes = new ArrayList<String>();
+		notes.add(workNote);
 		this.cancellationCode = null;
 		this.resolutionCode = null;
 		this.onHoldReason = null;
 		this.owner = null;
 		this.changeRequest = null;
+		newState = new NewState();
+		resolvedState = new ResolvedState();
+		onHoldState = new OnHoldState();
+		closedState = new ClosedState();
+		inProgressState = new InProgressState();
+		canceledState = new CanceledState();
+		state = newState;
 	}
 	/**
 	 * Constructor for Managed incidents when given an incident
@@ -139,6 +147,12 @@ public class ManagedIncident {
 		setCancellationCode(i.getCancellationCode());
 		WorkNotes w = i.getWorkNotes();
 		this.notes = (ArrayList<String>) w.getNotes();
+		newState = new NewState();
+		resolvedState = new ResolvedState();
+		onHoldState = new OnHoldState();
+		closedState = new ClosedState();
+		inProgressState = new InProgressState();
+		canceledState = new CanceledState();
 		setState(i.getState());
 		
 	}
@@ -246,7 +260,9 @@ public class ManagedIncident {
 	 * @return the incident's cancellation code
 	 */
 	public String getCancellationCodeString() {
-		if(cancellationCode.equals(CancellationCode.DUPLICATE)) {
+		if(cancellationCode.equals(null)) {
+			return null;
+		} else if(cancellationCode.equals(CancellationCode.DUPLICATE)) {
 			return Command.CC_DUPLICATE;
 		} else if(cancellationCode.equals(CancellationCode.NOT_AN_INCIDENT)) {
 			return Command.CC_NOT_AN_INCIDENT;
@@ -288,7 +304,9 @@ public class ManagedIncident {
 	 * @return the incident's resolution code
 	 */
 	public  String getResolutionCodeString() {
-		if(resolutionCode.equals(ResolutionCode.CALLER_CLOSED)) {
+		if(resolutionCode == null) {
+			return null;
+		} else if(resolutionCode.equals(ResolutionCode.CALLER_CLOSED)) {
 			return Command.RC_CALLER_CLOSED;
 		} else if(resolutionCode.equals(ResolutionCode.NOT_SOLVED)) {
 			return Command.RC_NOT_SOLVED;
@@ -349,15 +367,21 @@ public class ManagedIncident {
 		switch(state.getStateName()) {
 			case NEW_NAME:
 				newState.updateState(c);
+				break;
 			case IN_PROGRESS_NAME:
 				inProgressState.updateState(c);
+				break;
 			case ON_HOLD_NAME:
 				onHoldState.updateState(c);
+				break;
 			case RESOLVED_NAME:
 				resolvedState.updateState(c);
+				break;
 			case CLOSED_NAME:
 				closedState.updateState(c);
+				break;
 			case CANCELED_NAME:
+				canceledState.updateState(c);
 				break;
 				
 		}
@@ -369,15 +393,21 @@ public class ManagedIncident {
 	public Incident getXMLIncident() {
 		Incident xml = new Incident();
 		xml.setCaller(caller);
-		xml.setCancellationCode(this.getCancellationCodeString());
+		if(cancellationCode != null) {
+			xml.setCancellationCode(this.getCancellationCodeString());
+		}
 		xml.setCategory(this.getCategoryString());
 		xml.setChangeRequest(changeRequest);
 		xml.setId(incidentId);
 		xml.setName(name);
-		xml.setOnHoldReason(this.getOnHoldReasonString());
+		if(onHoldReason != null) {
+			xml.setOnHoldReason(this.getOnHoldReasonString());
+		}
 		xml.setOwner(owner);
 		xml.setPriority(this.getPriorityString());
-		xml.setResolutionCode(this.getResolutionCodeString());
+		if(resolutionCode != null) {
+			xml.setResolutionCode(this.getResolutionCodeString());
+		}
 		xml.setState(this.getState().getStateName());
 		WorkNotes w = new WorkNotes();
 		for(int i = 0; i < notes.size(); i++) {
@@ -425,7 +455,9 @@ public class ManagedIncident {
 	}
 	
 	private OnHoldReason convertOnHoldReason(String s) {
-		if(s.equals(Command.OH_CALLER)) {
+		if(s == null) {
+			return null;
+		} else if(s.equals(Command.OH_CALLER)) {
 			return OnHoldReason.AWAITING_CALLER;
 		} else if(s.equals(Command.OH_CHANGE)) {
 			return OnHoldReason.AWAITING_CHANGE;
@@ -437,7 +469,9 @@ public class ManagedIncident {
 	}
 	
 	private ResolutionCode convertResolutionCode(String s) {
-		if(s.equals(Command.RC_PERMANENTLY_SOLVED)) {
+		if(s == null) {
+			return null;
+		} else if(s.equals(Command.RC_PERMANENTLY_SOLVED)) {
 			return ResolutionCode.PERMANENTLY_SOLVED;
 		} else if(s.equals(Command.RC_WORKAROUND)) {
 			return ResolutionCode.WORKAROUND;
@@ -451,7 +485,9 @@ public class ManagedIncident {
 	}
 	
 	private CancellationCode convertCancellationCode(String s) {
-		if(s.equals(Command.CC_DUPLICATE)) {
+		if(s == null) {
+			return null;
+		} else if(s.equals(Command.CC_DUPLICATE)) {
 			return CancellationCode.DUPLICATE;
 		} else if(s.equals(Command.CC_UNNECESSARY)) {
 			return CancellationCode.UNNECESSARY;
@@ -463,7 +499,9 @@ public class ManagedIncident {
 	}
 	
 	private IncidentState convertState(String s) {
-		if(s.equals(NEW_NAME)) {
+		if(s == null) {
+			throw new IllegalArgumentException();
+		} else if(s.equals(NEW_NAME)) {
 			return newState;
 		} else if(s.equals(IN_PROGRESS_NAME)) {
 			return inProgressState;
@@ -499,16 +537,17 @@ public class ManagedIncident {
 				case RESOLVE:
 					state = resolvedState;
 					resolutionCode = command.getResolutionCode();
+					break;
 				case CONFIRM:
 					throw new UnsupportedOperationException();
 				case REOPEN:
 					state = inProgressState;
+					break;
 				case CANCEL:
 					state = canceledState;
 					cancellationCode = command.getCancellationCode();
-				default:
-					throw new UnsupportedOperationException();
-					
+					break;
+			
 			}
 			
 		}
@@ -539,21 +578,24 @@ public class ManagedIncident {
 				throw new UnsupportedOperationException();
 			case HOLD:
 				state = onHoldState;
+				onHoldReason = command.getOnHoldReason();
 				resolutionCode = null;
+				break;
 			case RESOLVE:
 				throw new UnsupportedOperationException();
 			case CONFIRM:
 				state = closedState;
+				break;
 			case REOPEN:
 				state = inProgressState;
 				resolutionCode = null;
+				break;
 			case CANCEL:
 				state = canceledState;
 				resolutionCode = null;
 				cancellationCode = command.getCancellationCode();
-			default:
-				throw new UnsupportedOperationException();
-				
+				break;
+			
 			}
 		}
 		/**
@@ -582,6 +624,7 @@ public class ManagedIncident {
 				case INVESTIGATE:
 					state = inProgressState;
 					owner = command.getOwnerId();
+					break;
 				case HOLD:
 					throw new UnsupportedOperationException();
 				case RESOLVE:
@@ -593,8 +636,7 @@ public class ManagedIncident {
 				case CANCEL:
 					state = canceledState;
 					cancellationCode = command.getCancellationCode();
-				default:
-					throw new UnsupportedOperationException();
+					break;
 				
 			}
 			
@@ -627,9 +669,11 @@ public class ManagedIncident {
 			case HOLD:
 				state = onHoldState;
 				onHoldReason = command.getOnHoldReason();
+				break;
 			case RESOLVE:
 				state = resolvedState;
 				resolutionCode = command.getResolutionCode();
+				break;
 			case CONFIRM:
 				throw new UnsupportedOperationException();
 			case REOPEN:
@@ -637,9 +681,8 @@ public class ManagedIncident {
 			case CANCEL:
 				state = canceledState;
 				cancellationCode = command.getCancellationCode();
-			default:
-				throw new UnsupportedOperationException();
-				
+				break;
+			
 			}
 			
 		}
@@ -676,10 +719,10 @@ public class ManagedIncident {
 				throw new UnsupportedOperationException();
 			case REOPEN:
 				state = inProgressState;
+				break;
 			case CANCEL:
 				throw new UnsupportedOperationException();
-			default:
-				throw new UnsupportedOperationException();
+			
 				
 			}
 			
@@ -719,9 +762,7 @@ public class ManagedIncident {
 				throw new UnsupportedOperationException();
 			case CANCEL:
 				throw new UnsupportedOperationException();
-			default:
-				throw new UnsupportedOperationException();
-				
+			
 			}
 			
 		}
