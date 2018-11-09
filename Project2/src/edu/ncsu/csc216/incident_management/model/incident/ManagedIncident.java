@@ -116,11 +116,11 @@ public class ManagedIncident {
 		this.name = name;
 		notes = new ArrayList<String>();
 		notes.add(workNote);
-		this.cancellationCode = null;
-		this.resolutionCode = null;
-		this.onHoldReason = null;
-		this.owner = null;
-		this.changeRequest = null;
+		cancellationCode = null;
+		resolutionCode = null;
+		onHoldReason = null;
+		owner = null;
+		changeRequest = null;
 		newState = new NewState();
 		resolvedState = new ResolvedState();
 		onHoldState = new OnHoldState();
@@ -199,10 +199,10 @@ public class ManagedIncident {
 			return C_INQUIRY;
 		} else if(category.equals(Category.NETWORK)) {
 			return C_NETWORK;
-		} else if(category.equals(Category.SOFTWARE)) {
+		} else{
 			return C_SOFTWARE;
 		}
-		return null;
+		
 	}
 	/**
 	 * Sets the incident's category
@@ -222,10 +222,9 @@ public class ManagedIncident {
 			return P_MEDIUM;
 		} else if(priority.equals(Priority.LOW)) {
 			return P_LOW;
-		} else if(priority.equals(Priority.URGENT)) {
+		} else {
 			return P_URGENT;
 		}
-		return null;
 	}
 	/**
 	 * Sets the incident's priority
@@ -243,10 +242,10 @@ public class ManagedIncident {
 			return Command.OH_CALLER;
 		} else if(onHoldReason.equals(OnHoldReason.AWAITING_CHANGE)) {
 			return Command.OH_CHANGE;
-		} else if(onHoldReason.equals(OnHoldReason.AWAITING_VENDOR)) {
+		} else {
 			return Command.OH_VENDOR;
 		}
-		return null;
+		
 	}
 	/**
 	 * Sets the incident's on hold reason
@@ -260,16 +259,15 @@ public class ManagedIncident {
 	 * @return the incident's cancellation code
 	 */
 	public String getCancellationCodeString() {
-		if(cancellationCode.equals(null)) {
+		if(cancellationCode == null) {
 			return null;
 		} else if(cancellationCode.equals(CancellationCode.DUPLICATE)) {
 			return Command.CC_DUPLICATE;
 		} else if(cancellationCode.equals(CancellationCode.NOT_AN_INCIDENT)) {
 			return Command.CC_NOT_AN_INCIDENT;
-		} else if(cancellationCode.equals(CancellationCode.UNNECESSARY)) {
+		} else {
 			return Command.CC_UNNECESSARY;
 		}
-		return null;
 	}
 	/**
 	 * Sets the incident's cancellation code
@@ -312,10 +310,9 @@ public class ManagedIncident {
 			return Command.RC_NOT_SOLVED;
 		} else if(resolutionCode.equals(ResolutionCode.PERMANENTLY_SOLVED)) {
 			return Command.RC_PERMANENTLY_SOLVED;
-		} else if(resolutionCode.equals(ResolutionCode.WORKAROUND)) {
+		} else {
 			return Command.RC_WORKAROUND;
 		}
-		return null;
 	}
 	/**
 	 * Sets the incident's resolution code
@@ -580,20 +577,24 @@ public class ManagedIncident {
 				state = onHoldState;
 				onHoldReason = command.getOnHoldReason();
 				resolutionCode = null;
+				notes.add(command.getWorkNote());
 				break;
 			case RESOLVE:
 				throw new UnsupportedOperationException();
 			case CONFIRM:
 				state = closedState;
+				notes.add(command.getWorkNote());
 				break;
 			case REOPEN:
 				state = inProgressState;
 				resolutionCode = null;
+				notes.add(command.getWorkNote());
 				break;
 			case CANCEL:
 				state = canceledState;
 				resolutionCode = null;
 				cancellationCode = command.getCancellationCode();
+				notes.add(command.getWorkNote());
 				break;
 			
 			}
@@ -624,6 +625,7 @@ public class ManagedIncident {
 				case INVESTIGATE:
 					state = inProgressState;
 					owner = command.getOwnerId();
+					notes.add(command.getWorkNote());
 					break;
 				case HOLD:
 					throw new UnsupportedOperationException();
@@ -636,6 +638,7 @@ public class ManagedIncident {
 				case CANCEL:
 					state = canceledState;
 					cancellationCode = command.getCancellationCode();
+					notes.add(command.getWorkNote());
 					break;
 				
 			}
@@ -669,10 +672,12 @@ public class ManagedIncident {
 			case HOLD:
 				state = onHoldState;
 				onHoldReason = command.getOnHoldReason();
+				notes.add(command.getWorkNote());
 				break;
 			case RESOLVE:
 				state = resolvedState;
 				resolutionCode = command.getResolutionCode();
+				notes.add(command.getWorkNote());
 				break;
 			case CONFIRM:
 				throw new UnsupportedOperationException();
@@ -681,6 +686,7 @@ public class ManagedIncident {
 			case CANCEL:
 				state = canceledState;
 				cancellationCode = command.getCancellationCode();
+				notes.add(command.getWorkNote());
 				break;
 			
 			}
@@ -719,6 +725,7 @@ public class ManagedIncident {
 				throw new UnsupportedOperationException();
 			case REOPEN:
 				state = inProgressState;
+				notes.add(command.getWorkNote());
 				break;
 			case CANCEL:
 				throw new UnsupportedOperationException();

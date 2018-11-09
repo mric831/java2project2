@@ -2,6 +2,8 @@ package edu.ncsu.csc216.incident_management.model.incident;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import edu.ncsu.csc216.incident.xml.Incident;
@@ -138,6 +140,14 @@ public class ManagedIncidentTest {
 	public void testGetCategoryString() {
 		ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
 		assertEquals(m.getCategoryString(), "Database");
+		ManagedIncident m2 = new ManagedIncident("caller", Category.HARDWARE, Priority.HIGH, "name", "note");
+		assertEquals(m2.getCategoryString(), "Hardware");
+		ManagedIncident m3 = new ManagedIncident("caller", Category.INQUIRY, Priority.HIGH, "name", "note");
+		assertEquals(m3.getCategoryString(), "Inquiry");
+		ManagedIncident m4 = new ManagedIncident("caller", Category.NETWORK, Priority.HIGH, "name", "note");
+		assertEquals(m4.getCategoryString(), "Network");
+		ManagedIncident m5 = new ManagedIncident("caller", Category.SOFTWARE, Priority.HIGH, "name", "note");
+		assertEquals(m5.getCategoryString(), "Software");
 		ManagedIncident.setCounter(0);
 	}
 	/**
@@ -147,6 +157,12 @@ public class ManagedIncidentTest {
 	public void testGetPriorityString() {
 		ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
 		assertEquals(m.getPriorityString(), "High");
+		ManagedIncident m2 = new ManagedIncident("caller", Category.DATABASE, Priority.URGENT, "name", "note");
+		assertEquals(m2.getPriorityString(), "Urgent");
+		ManagedIncident m3 = new ManagedIncident("caller", Category.DATABASE, Priority.LOW, "name", "note");
+		assertEquals(m3.getPriorityString(), "Low");
+		ManagedIncident m4 = new ManagedIncident("caller", Category.DATABASE, Priority.MEDIUM, "name", "note");
+		assertEquals(m4.getPriorityString(), "Medium");
 		ManagedIncident.setCounter(0);
 	}
 	/**
@@ -154,70 +170,128 @@ public class ManagedIncidentTest {
 	 */
 	@Test
 	public void testGetOnHoldReasonString() {
-		fail("Not yet implemented");
+		ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
+		Command c = new Command(CommandValue.INVESTIGATE, "test", null, null, null, "note");
+		Command c2 = new Command(CommandValue.HOLD, "test", OnHoldReason.AWAITING_CALLER, null, null, "note");
+		m.update(c);
+		m.update(c2);
+		assertEquals(m.getOnHoldReasonString(), "Awaiting Caller");
+		c = new Command(CommandValue.REOPEN, "test", null, null, null, "note");
+		m.update(c);
+		c2 = new Command(CommandValue.HOLD, "test", OnHoldReason.AWAITING_CHANGE, null, null, "note");
+		m.update(c2);
+		assertEquals(m.getOnHoldReasonString(), "Awaiting Change");
+		m.update(c);
+		c2 = new Command(CommandValue.HOLD, "test", OnHoldReason.AWAITING_VENDOR, null, null, "note");
+		m.update(c2);
+		assertEquals(m.getOnHoldReasonString(), "Awaiting Vendor");
 	}
 	/**
 	 * Tests functionality of cancellation code string getter
 	 */
 	@Test
 	public void testGetCancellationCodeString() {
-		fail("Not yet implemented");
+		ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
+		assertEquals(m.getCancellationCodeString(), null);
+		Command c = new Command(CommandValue.CANCEL, "test", null, null, CancellationCode.DUPLICATE, "note");
+		m.update(c);
+		assertEquals(m.getCancellationCodeString(), "Duplicate");
+		m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
+		c = new Command(CommandValue.CANCEL, "test", null, null, CancellationCode.NOT_AN_INCIDENT, "note");
+		m.update(c);
+		assertEquals(m.getCancellationCodeString(), "Not an Incident");
+		m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
+		c = new Command(CommandValue.CANCEL, "test", null, null, CancellationCode.UNNECESSARY, "note");
+		m.update(c);
+		assertEquals(m.getCancellationCodeString(), "Unnecessary");
 	}
-	/**
-	 * Tests functionality of state getter
-	 */
-	@Test
-	public void testGetState() {
-		fail("Not yet implemented");
-	}
-	/**
-	 * Tests functionality of resolution code getter
-	 */
-	@Test
-	public void testGetResolutionCode() {
-		fail("Not yet implemented");
-	}
+	
 	/**
 	 * Tests functionality of resolution code string getter
 	 */
 	@Test
 	public void testGetResolutionCodeString() {
-		fail("Not yet implemented");
+		ManagedIncident m1 = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
+		ManagedIncident m2 = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
+		ManagedIncident m3 = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
+		ManagedIncident m4 = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
+		assertEquals(m1.getResolutionCodeString(), null);
+		Command investigate = new Command(CommandValue.INVESTIGATE, "test", null, null, null, "note");
+		m1.update(investigate);
+		m2.update(investigate);
+		m3.update(investigate);
+		m4.update(investigate);
+		Command r1 = new Command(CommandValue.RESOLVE, "test", null, ResolutionCode.CALLER_CLOSED, null, "note");
+		Command r2 = new Command(CommandValue.RESOLVE, "test", null, ResolutionCode.NOT_SOLVED, null, "note");
+		Command r3 = new Command(CommandValue.RESOLVE, "test", null, ResolutionCode.PERMANENTLY_SOLVED, null, "note");
+		Command r4 = new Command(CommandValue.RESOLVE, "test", null, ResolutionCode.WORKAROUND, null, "note");
+		m1.update(r1);
+		m2.update(r2);
+		m3.update(r3);
+		m4.update(r4);
+		assertEquals(m1.getResolutionCodeString(), "Caller Closed");
+		assertEquals(m2.getResolutionCodeString(), "Not Solved");
+		assertEquals(m3.getResolutionCodeString(), "Permanently Solved");
+		assertEquals(m4.getResolutionCodeString(), "Workaround");
+		ManagedIncident.setCounter(0);
 	}
 	/**
 	 * Tests functionality of owner getter
 	 */
 	@Test
 	public void testGetOwner() {
-		fail("Not yet implemented");
+		ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
+		Command c = new Command(CommandValue.INVESTIGATE, "test", null, null, null, "note");
+		m.update(c);
+		assertEquals(m.getOwner(), "test");
+		ManagedIncident.setCounter(0);
 	}
 	/**
 	 * Tests functionality of name getter
 	 */
 	@Test
 	public void testGetName() {
-		fail("Not yet implemented");
+		ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
+		assertEquals(m.getName(), "name");
+		ManagedIncident.setCounter(0);
 	}
 	/**
 	 * Tests functionality of caller getter
 	 */
 	@Test
 	public void testGetCaller() {
-		fail("Not yet implemented");
+		ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
+		assertEquals(m.getCaller(), "caller");
+		ManagedIncident.setCounter(0);
 	}
 	/**
 	 * Tests functionality of notes getter
 	 */
 	@Test
 	public void testGetNotes() {
-		fail("Not yet implemented");
+		ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
+		ArrayList<String> match = new ArrayList<String>();
+		match.add("note");
+		assertEquals(m.getNotes(), match);
+		Command c = new Command(CommandValue.INVESTIGATE, "test", null, null, null, "note2");
+		match.add("note2");
+		m.update(c);
+		assertEquals(m.getNotes(), match);
+		ManagedIncident.setCounter(0);
 	}
 	/**
 	 * Tests functionality of notes string getter
 	 */
 	@Test
 	public void testGetNotesString() {
-		fail("Not yet implemented");
+		ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
+		String match = "[note]";
+		assertEquals(m.getNotesString(), match);
+		Command c = new Command(CommandValue.INVESTIGATE, "test", null, null, null, "note2");
+		match = "[note, note2]";
+		m.update(c);
+		assertEquals(m.getNotesString(), match);
+		ManagedIncident.setCounter(0);
 	}
 	/**
 	 * Tests functionality of update method
