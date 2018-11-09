@@ -36,7 +36,7 @@ public class ManagedIncidentList {
 	public int addIncident(String caller, Category c, Priority p, String name, String workNote) {
 		ManagedIncident toAdd = new ManagedIncident(caller, c, p, name, workNote);
 		incidents.add(toAdd);
-		return incidents.get(incidents.size() - 1).getIncidentId();
+		return incidents.size() - 1; 
 	}
 	/**
 	 * Adds incidents to the list from an xml file
