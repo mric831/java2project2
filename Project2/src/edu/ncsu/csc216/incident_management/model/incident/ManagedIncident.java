@@ -545,6 +545,7 @@ public class ManagedIncident {
 						changeRequest = command.getWorkNote();
 					}
 					state = resolvedState;
+					onHoldReason = null;
 					resolutionCode = command.getResolutionCode();
 					notes.add(command.getWorkNote());
 					break;
