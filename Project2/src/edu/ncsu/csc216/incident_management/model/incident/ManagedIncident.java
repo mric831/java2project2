@@ -380,7 +380,6 @@ public class ManagedIncident {
 				closedState.updateState(c);
 				break;
 			case CANCELED_NAME:
-				canceledState.updateState(c);
 				break;
 				
 		}
@@ -760,6 +759,7 @@ public class ManagedIncident {
 		public void updateState(Command command) {
 			switch(command.getCommand()) {
 			case INVESTIGATE:
+				setOnHoldReason(null);
 				throw new UnsupportedOperationException();
 			case HOLD:
 				throw new UnsupportedOperationException();
