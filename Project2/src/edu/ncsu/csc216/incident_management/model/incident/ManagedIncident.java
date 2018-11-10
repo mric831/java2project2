@@ -1,4 +1,4 @@
-package edu.ncsu.csc216.incident_management.model.incident;
+ package edu.ncsu.csc216.incident_management.model.incident;
 
 import java.util.ArrayList;
 
@@ -543,7 +543,9 @@ public class ManagedIncident {
 					
 					throw new UnsupportedOperationException();
 				case RESOLVE:
-					
+					if(onHoldReason.equals(OnHoldReason.AWAITING_CHANGE)) {
+						changeRequest = command.getWorkNote();
+					}
 					state = resolvedState;
 					resolutionCode = command.getResolutionCode();
 					break;
@@ -551,7 +553,9 @@ public class ManagedIncident {
 					
 					throw new UnsupportedOperationException();
 				case REOPEN:
-					
+					if(onHoldReason.equals(OnHoldReason.AWAITING_CHANGE)) {
+						changeRequest = command.getWorkNote();
+					}
 					state = inProgressState;
 					break;
 				case CANCEL:

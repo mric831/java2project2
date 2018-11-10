@@ -27,6 +27,7 @@ public class ManagedIncidentListTest {
 	public void testManagedIncidentList() {
 		ManagedIncidentList list = new ManagedIncidentList();
 		assertNotNull(list.getManagedIncidents());
+		
 	}
 	/**
 	 * Tests method that adds incident to list
