@@ -748,6 +748,7 @@ public class ManagedIncident {
 			case REOPEN:
 				state = inProgressState;
 				notes.add(command.getWorkNote());
+				resolutionCode = null;
 				break;
 			case CANCEL:
 				
