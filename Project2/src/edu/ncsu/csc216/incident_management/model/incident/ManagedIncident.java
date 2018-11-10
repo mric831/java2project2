@@ -554,6 +554,7 @@ public class ManagedIncident {
 					if(onHoldReason.equals(OnHoldReason.AWAITING_CHANGE)) {
 						changeRequest = command.getWorkNote();
 					}
+					onHoldReason = null;
 					notes.add(command.getWorkNote());
 					state = inProgressState;
 					break;
