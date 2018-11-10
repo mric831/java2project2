@@ -28,41 +28,49 @@ public class ManagedIncidentTest {
 	public void testManagedIncidentStringCategoryPriorityStringString() {
 		try {
 			ManagedIncident m = new ManagedIncident(null, Category.DATABASE, Priority.HIGH, "name", "note");
+			m.getCaller();
 		} catch(IllegalArgumentException e) {
 			assertNotNull(e);
 		}
 		try {
 			ManagedIncident m = new ManagedIncident("", Category.DATABASE, Priority.HIGH, "name", "note");
+			m.getCaller();
 		} catch(IllegalArgumentException e) {
 			assertNotNull(e);
 		}
 		try {
 			ManagedIncident m = new ManagedIncident("caller", null, Priority.HIGH, "name", "note");
+			m.getCaller();
 		} catch(IllegalArgumentException e) {
 			assertNotNull(e);
 		}
 		try {
 			ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, null, "name", "note");
+			m.getCaller();
 		} catch(IllegalArgumentException e) {
 			assertNotNull(e);
 		}
 		try {
 			ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, null, "note");
+			m.getCaller();
 		} catch(IllegalArgumentException e) {
 			assertNotNull(e);
 		}
 		try {
 			ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "", "note");
+			m.getCaller();
 		} catch(IllegalArgumentException e) {
 			assertNotNull(e);
 		}
 		try {
 			ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", null);
+			m.getCaller();
 		} catch(IllegalArgumentException e) {
 			assertNotNull(e);
 		}
 		try {
 			ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "");
+			m.getCaller();
 		} catch(IllegalArgumentException e) {
 			assertNotNull(e);
 		}
@@ -557,12 +565,6 @@ public class ManagedIncidentTest {
 		assertEquals(i.getName(), "name");
 		assertEquals(i.getWorkNotes().getNotes().get(0), "note");
 	}
-	/**
-	 * Tests functionality of counter setter
-	 */
-	@Test
-	public void testSetCounter() {
 	
-	}
 
 }

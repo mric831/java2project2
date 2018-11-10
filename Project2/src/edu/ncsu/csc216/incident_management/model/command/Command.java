@@ -63,18 +63,12 @@ public class Command {
 			if(id == null || id.equals("")) {
 				throw new IllegalArgumentException();
 			}
-		} else if(v.equals(CommandValue.HOLD)) {
-			if(o == null) {
-				throw new IllegalArgumentException();
-			}
-		} else if(v.equals(CommandValue.RESOLVE)) {
-			if(r == null) {
-				throw new IllegalArgumentException();
-			}
-		} else if(v.equals(CommandValue.CANCEL)) {
-			if(c == null) {
-				throw new IllegalArgumentException();
-			}
+		} else if(v.equals(CommandValue.HOLD) && o == null) {
+			throw new IllegalArgumentException();
+		} else if(v.equals(CommandValue.RESOLVE) && r == null) {
+			throw new IllegalArgumentException();
+		} else if(v.equals(CommandValue.CANCEL) && c == null) {
+			throw new IllegalArgumentException();
 		}
 		this.c = v;
 		this.ownerId = id;

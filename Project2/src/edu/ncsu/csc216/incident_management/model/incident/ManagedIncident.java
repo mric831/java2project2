@@ -2,11 +2,11 @@ package edu.ncsu.csc216.incident_management.model.incident;
 
 import java.util.ArrayList;
 
+
 import edu.ncsu.csc216.incident.xml.Incident;
 import edu.ncsu.csc216.incident.xml.WorkNotes;
 import edu.ncsu.csc216.incident_management.model.command.Command;
 import edu.ncsu.csc216.incident_management.model.command.Command.CancellationCode;
-import edu.ncsu.csc216.incident_management.model.command.Command.CommandValue;
 import edu.ncsu.csc216.incident_management.model.command.Command.OnHoldReason;
 import edu.ncsu.csc216.incident_management.model.command.Command.ResolutionCode;
 
