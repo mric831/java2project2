@@ -108,8 +108,9 @@ public class ManagedIncident {
 		} else if(workNote == null || workNote.equals("")) {
 			throw new IllegalArgumentException();
 		}
-		incrementCounter();
+		
 		this.incidentId = counter;
+		incrementCounter();
 		this.caller = caller;
 		this.category = c;
 		this.priority = p;
@@ -134,8 +135,9 @@ public class ManagedIncident {
 	 * @param i the incident to create as a managed incident
 	 */
 	public ManagedIncident(Incident i) {
-		incrementCounter();
+		
 		this.incidentId = counter;
+		incrementCounter();
 		this.caller = i.getCaller();
 		this.owner = i.getOwner();
 		this.name = i.getName();

@@ -80,12 +80,12 @@ public class IncidentManagerTest {
 		String[][] compare = new String[2][5];
 		IM.addManagedIncidentToList("caller", Category.DATABASE, Priority.HIGH, "name", "note");
 		IM.addManagedIncidentToList("caller2", Category.HARDWARE, Priority.HIGH, "name2", "note2");
-		compare [0][0] = "1";
+		compare [0][0] = "0";
 		compare [0][1] = "Database";
 		compare [0][2] = "New";
 		compare [0][3] = "High";
 		compare [0][4] = "name";
-		compare [1][0] = "2";
+		compare [1][0] = "1";
 		compare [1][1] = "Hardware";
 		compare [1][2] = "New";
 		compare [1][3] = "High";
@@ -114,7 +114,7 @@ public class IncidentManagerTest {
 		IM.addManagedIncidentToList("caller", Category.DATABASE, Priority.HIGH, "name", "note");
 		IM.addManagedIncidentToList("caller2", Category.HARDWARE, Priority.HIGH, "name2", "note2");
 		
-		compare [0][0] = "2";
+		compare [0][0] = "1";
 		compare [0][1] = "Hardware";
 		compare [0][2] = "New";
 		compare [0][3] = "High";
@@ -134,7 +134,7 @@ public class IncidentManagerTest {
 		IncidentManager IM = IncidentManager.getInstance();
 		IM.createNewManagedIncidentList();
 		IM.addManagedIncidentToList("caller", Category.DATABASE, Priority.HIGH, "name", "note");
-		assertEquals(IM.getManagedIncidentById(1).getCaller(), "caller");
+		assertEquals(IM.getManagedIncidentById(0).getCaller(), "caller");
 	}
 	/**
 	 * Tests functionality of method that executes commands
@@ -146,7 +146,7 @@ public class IncidentManagerTest {
 		IM.addManagedIncidentToList("caller", Category.DATABASE, Priority.HIGH, "name", "note");
 		Command c = new Command(CommandValue.CANCEL, "owner", null, null, CancellationCode.DUPLICATE, "note");
 		IM.executeCommand(0, c);
-		assertEquals(IM.getManagedIncidentById(1).getCancellationCodeString(), "Duplicate");
+		assertEquals(IM.getManagedIncidentById(0).getCancellationCodeString(), "Duplicate");
 	}
 	/**
 	 * Tests functionality of method that deletes incidents by id
@@ -158,7 +158,7 @@ public class IncidentManagerTest {
 		IM.addManagedIncidentToList("caller", Category.DATABASE, Priority.HIGH, "name", "note");
 		IM.addManagedIncidentToList("caller2", Category.DATABASE, Priority.HIGH, "name2", "note2");
 		IM.deleteManagedIncidentById(0);
-		assertEquals(IM.getManagedIncidentById(1).getCaller(), "caller");
+		assertEquals(IM.getManagedIncidentById(1).getCaller(), "caller2");
 	}
 	/**
 	 * Tests functionality of method that adds incidents to the list

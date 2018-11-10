@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Incidents><Incident><id>1</id><caller>caller</caller><category>Database</category><state>New</state><priority>High</priority><name>name</name><work_notes><note>note</note></work_notes></Incident></Incidents>
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?><Incidents><Incident><id>1</id><caller>caller2</caller><category>Hardware</category><state>New</state><priority>High</priority><name>name2</name><work_notes><note>note2</note></work_notes></Incident></Incidents>
