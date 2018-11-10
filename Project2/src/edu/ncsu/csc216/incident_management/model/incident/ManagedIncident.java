@@ -380,6 +380,7 @@ public class ManagedIncident {
 				closedState.updateState(c);
 				break;
 			case CANCELED_NAME:
+				canceledState.updateState(c);
 				break;
 				
 		}
