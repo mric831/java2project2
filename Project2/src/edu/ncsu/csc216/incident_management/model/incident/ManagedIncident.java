@@ -718,18 +718,23 @@ public class ManagedIncident {
 		public void updateState(Command command) {
 			switch(command.getCommand()) {
 			case INVESTIGATE:
+				notes.add(command.getWorkNote());
 				throw new UnsupportedOperationException();
 			case HOLD:
+				notes.add(command.getWorkNote());
 				throw new UnsupportedOperationException();
 			case RESOLVE:
+				notes.add(command.getWorkNote());
 				throw new UnsupportedOperationException();
 			case CONFIRM:
+				notes.add(command.getWorkNote());
 				throw new UnsupportedOperationException();
 			case REOPEN:
 				state = inProgressState;
 				notes.add(command.getWorkNote());
 				break;
 			case CANCEL:
+				notes.add(command.getWorkNote());
 				throw new UnsupportedOperationException();
 			
 				
@@ -758,8 +763,7 @@ public class ManagedIncident {
 		 */
 		@Override
 		public void updateState(Command command) {
-			throw new UnsupportedOperationException();
-			/*switch(command.getCommand()) {
+			switch(command.getCommand()) {
 			case INVESTIGATE:
 				throw new UnsupportedOperationException();
 			case HOLD:
@@ -773,7 +777,7 @@ public class ManagedIncident {
 			case CANCEL:
 				throw new UnsupportedOperationException();
 			
-			}*/
+			}
 			
 		}
 		/**
