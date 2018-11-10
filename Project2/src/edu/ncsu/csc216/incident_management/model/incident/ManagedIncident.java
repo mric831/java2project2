@@ -534,19 +534,25 @@ public class ManagedIncident {
 		public void updateState(Command command) {
 			switch(command.getCommand()) {
 				case INVESTIGATE:
+					onHoldReason = command.getOnHoldReason();
 					throw new UnsupportedOperationException();
 				case HOLD:
+					onHoldReason = command.getOnHoldReason();
 					throw new UnsupportedOperationException();
 				case RESOLVE:
+					onHoldReason = command.getOnHoldReason();
 					state = resolvedState;
 					resolutionCode = command.getResolutionCode();
 					break;
 				case CONFIRM:
+					onHoldReason = command.getOnHoldReason();
 					throw new UnsupportedOperationException();
 				case REOPEN:
+					onHoldReason = command.getOnHoldReason();
 					state = inProgressState;
 					break;
 				case CANCEL:
+					onHoldReason = command.getOnHoldReason();
 					state = canceledState;
 					cancellationCode = command.getCancellationCode();
 					break;
@@ -578,6 +584,7 @@ public class ManagedIncident {
 		public void updateState(Command command) {
 			switch(command.getCommand()) {
 			case INVESTIGATE:
+				onHoldReason = command.getOnHoldReason();
 				throw new UnsupportedOperationException();
 			case HOLD:
 				state = onHoldState;
@@ -586,17 +593,21 @@ public class ManagedIncident {
 				notes.add(command.getWorkNote());
 				break;
 			case RESOLVE:
+				onHoldReason = command.getOnHoldReason();
 				throw new UnsupportedOperationException();
 			case CONFIRM:
+				onHoldReason = command.getOnHoldReason();
 				state = closedState;
 				notes.add(command.getWorkNote());
 				break;
 			case REOPEN:
+				onHoldReason = command.getOnHoldReason();
 				state = inProgressState;
 				resolutionCode = null;
 				notes.add(command.getWorkNote());
 				break;
 			case CANCEL:
+				onHoldReason = command.getOnHoldReason();
 				state = canceledState;
 				resolutionCode = null;
 				cancellationCode = command.getCancellationCode();
@@ -629,19 +640,25 @@ public class ManagedIncident {
 		public void updateState(Command command) {
 			switch(command.getCommand()) {
 				case INVESTIGATE:
+					onHoldReason = command.getOnHoldReason();
 					state = inProgressState;
 					owner = command.getOwnerId();
 					notes.add(command.getWorkNote());
 					break;
 				case HOLD:
+					onHoldReason = command.getOnHoldReason();
 					throw new UnsupportedOperationException();
 				case RESOLVE:
+					onHoldReason = command.getOnHoldReason();
 					throw new UnsupportedOperationException();
 				case CONFIRM:
+					onHoldReason = command.getOnHoldReason();
 					throw new UnsupportedOperationException();
 				case REOPEN:
+					onHoldReason = command.getOnHoldReason();
 					throw new UnsupportedOperationException();
 				case CANCEL:
+					onHoldReason = command.getOnHoldReason();
 					state = canceledState;
 					cancellationCode = command.getCancellationCode();
 					notes.add(command.getWorkNote());
@@ -674,22 +691,28 @@ public class ManagedIncident {
 		public void updateState(Command command) {
 			switch(command.getCommand()) {
 			case INVESTIGATE:
+				onHoldReason = command.getOnHoldReason();
 				throw new UnsupportedOperationException();
 			case HOLD:
+				onHoldReason = command.getOnHoldReason();
 				state = onHoldState;
 				onHoldReason = command.getOnHoldReason();
 				notes.add(command.getWorkNote());
 				break;
 			case RESOLVE:
+				onHoldReason = command.getOnHoldReason();
 				state = resolvedState;
 				resolutionCode = command.getResolutionCode();
 				notes.add(command.getWorkNote());
 				break;
 			case CONFIRM:
+				onHoldReason = command.getOnHoldReason();
 				throw new UnsupportedOperationException();
 			case REOPEN:
+				onHoldReason = command.getOnHoldReason();
 				throw new UnsupportedOperationException();
 			case CANCEL:
+				onHoldReason = command.getOnHoldReason();
 				state = canceledState;
 				cancellationCode = command.getCancellationCode();
 				notes.add(command.getWorkNote());
@@ -722,22 +745,28 @@ public class ManagedIncident {
 		public void updateState(Command command) {
 			switch(command.getCommand()) {
 			case INVESTIGATE:
+				onHoldReason = command.getOnHoldReason();
 				notes.add(command.getWorkNote());
 				throw new UnsupportedOperationException();
 			case HOLD:
+				onHoldReason = command.getOnHoldReason();
 				notes.add(command.getWorkNote());
 				throw new UnsupportedOperationException();
 			case RESOLVE:
+				onHoldReason = command.getOnHoldReason();
 				notes.add(command.getWorkNote());
 				throw new UnsupportedOperationException();
 			case CONFIRM:
+				onHoldReason = command.getOnHoldReason();
 				notes.add(command.getWorkNote());
 				throw new UnsupportedOperationException();
 			case REOPEN:
+				onHoldReason = command.getOnHoldReason();
 				state = inProgressState;
 				notes.add(command.getWorkNote());
 				break;
 			case CANCEL:
+				onHoldReason = command.getOnHoldReason();
 				notes.add(command.getWorkNote());
 				throw new UnsupportedOperationException();
 			
@@ -769,16 +798,22 @@ public class ManagedIncident {
 		public void updateState(Command command) {
 			switch(command.getCommand()) {
 			case INVESTIGATE:
+				onHoldReason = command.getOnHoldReason();
 				throw new UnsupportedOperationException();
 			case HOLD:
+				onHoldReason = command.getOnHoldReason();
 				throw new UnsupportedOperationException();
 			case RESOLVE:
+				onHoldReason = command.getOnHoldReason();
 				throw new UnsupportedOperationException();
 			case CONFIRM:
+				onHoldReason = command.getOnHoldReason();
 				throw new UnsupportedOperationException();
 			case REOPEN:
+				onHoldReason = command.getOnHoldReason();
 				throw new UnsupportedOperationException();
 			case CANCEL:
+				onHoldReason = command.getOnHoldReason();
 				throw new UnsupportedOperationException();
 			
 			}
