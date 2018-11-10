@@ -758,9 +758,9 @@ public class ManagedIncident {
 		 */
 		@Override
 		public void updateState(Command command) {
-			switch(command.getCommand()) {
+			throw new UnsupportedOperationException();
+			/*switch(command.getCommand()) {
 			case INVESTIGATE:
-				setOnHoldReason(null);
 				throw new UnsupportedOperationException();
 			case HOLD:
 				throw new UnsupportedOperationException();
@@ -773,7 +773,7 @@ public class ManagedIncident {
 			case CANCEL:
 				throw new UnsupportedOperationException();
 			
-			}
+			}*/
 			
 		}
 		/**
