@@ -53,7 +53,7 @@ public class IncidentManager {
 		} catch(IncidentIOException e) {
 			throw new IllegalArgumentException();
 		}
-		
+
 	}
 	/**
 	 * Loads in incidents from a file to the list
@@ -84,9 +84,9 @@ public class IncidentManager {
 		for(int i = 0; i < temp.size(); i++) {
 			s[i][0] = "" + temp.get(i).getIncidentId();
 			s[i][1] = temp.get(i).getCategoryString();
-		    s[i][2] = temp.get(i).getState().getStateName();
-		    s[i][3] = temp.get(i).getPriorityString();
-		    s[i][4] = temp.get(i).getName();
+			s[i][2] = temp.get(i).getState().getStateName();
+			s[i][3] = temp.get(i).getPriorityString();
+			s[i][4] = temp.get(i).getName();
 		}
 		return s;
 	}
@@ -105,9 +105,9 @@ public class IncidentManager {
 		for(int i = 0; i < temp.size(); i++) {
 			s[i][0] = "" + temp.get(i).getIncidentId();
 			s[i][1] = temp.get(i).getCategoryString();
-		    s[i][2] = temp.get(i).getState().getStateName();
-		    s[i][3] = temp.get(i).getPriorityString();
-		    s[i][4] = temp.get(i).getName();
+			s[i][2] = temp.get(i).getState().getStateName();
+			s[i][3] = temp.get(i).getPriorityString();
+			s[i][4] = temp.get(i).getName();
 		}
 		return s;
 	}

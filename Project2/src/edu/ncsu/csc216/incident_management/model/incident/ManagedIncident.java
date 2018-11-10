@@ -1,4 +1,4 @@
- package edu.ncsu.csc216.incident_management.model.incident;
+package edu.ncsu.csc216.incident_management.model.incident;
 
 import java.util.ArrayList;
 
@@ -109,7 +109,7 @@ public class ManagedIncident {
 		} else if(workNote == null || workNote.equals("")) {
 			throw new IllegalArgumentException();
 		}
-		
+
 		this.incidentId = counter;
 		incrementCounter();
 		this.caller = caller;
@@ -136,7 +136,7 @@ public class ManagedIncident {
 	 * @param i the incident to create as a managed incident
 	 */
 	public ManagedIncident(Incident i) {
-		
+
 		this.incidentId = i.getId();
 		incrementCounter();
 		this.caller = i.getCaller();
@@ -157,11 +157,11 @@ public class ManagedIncident {
 		inProgressState = new InProgressState();
 		canceledState = new CanceledState();
 		setState(i.getState());
-		
+
 	}
-	
-	
-	
+
+
+
 	/**
 	 * Increments the counter variable
 	 */
@@ -205,7 +205,7 @@ public class ManagedIncident {
 		} else{
 			return C_SOFTWARE;
 		}
-		
+
 	}
 	/**
 	 * Sets the incident's category
@@ -251,7 +251,7 @@ public class ManagedIncident {
 		} else {
 			return Command.OH_VENDOR;
 		}
-		
+
 	}
 	/**
 	 * Sets the incident's on hold reason
@@ -372,25 +372,25 @@ public class ManagedIncident {
 	 */
 	public void update(Command c) {
 		switch(state.getStateName()) {
-			case NEW_NAME:
-				newState.updateState(c);
-				break;
-			case IN_PROGRESS_NAME:
-				inProgressState.updateState(c);
-				break;
-			case ON_HOLD_NAME:
-				onHoldState.updateState(c);
-				break;
-			case RESOLVED_NAME:
-				resolvedState.updateState(c);
-				break;
-			case CLOSED_NAME:
-				closedState.updateState(c);
-				break;
-			case CANCELED_NAME:
-				canceledState.updateState(c);
-				break;
-			default:	
+		case NEW_NAME:
+			newState.updateState(c);
+			break;
+		case IN_PROGRESS_NAME:
+			inProgressState.updateState(c);
+			break;
+		case ON_HOLD_NAME:
+			onHoldState.updateState(c);
+			break;
+		case RESOLVED_NAME:
+			resolvedState.updateState(c);
+			break;
+		case CLOSED_NAME:
+			closedState.updateState(c);
+			break;
+		case CANCELED_NAME:
+			canceledState.updateState(c);
+			break;
+		default:	
 		}
 	}
 	/**
@@ -568,38 +568,38 @@ public class ManagedIncident {
 		@Override
 		public void updateState(Command command) {
 			switch(command.getCommand()) {
-				case INVESTIGATE:
-					throw new UnsupportedOperationException();
-				case HOLD:
-					throw new UnsupportedOperationException();
-				case RESOLVE:
-					if(onHoldReason.equals(OnHoldReason.AWAITING_CHANGE)) {
-						changeRequest = command.getWorkNote();
-					}
-					state = resolvedState;
-					onHoldReason = null;
-					resolutionCode = command.getResolutionCode();
-					notes.add(command.getWorkNote());
-					break;
-				case CONFIRM:
-					throw new UnsupportedOperationException();
-				case REOPEN:
-					if(onHoldReason.equals(OnHoldReason.AWAITING_CHANGE)) {
-						changeRequest = command.getWorkNote();
-					}
-					onHoldReason = null;
-					notes.add(command.getWorkNote());
-					state = inProgressState;
-					break;
-				case CANCEL:
-					onHoldReason = null;
-					notes.add(command.getWorkNote());
-					state = canceledState;
-					cancellationCode = command.getCancellationCode();
-					break;
-				default:
+			case INVESTIGATE:
+				throw new UnsupportedOperationException();
+			case HOLD:
+				throw new UnsupportedOperationException();
+			case RESOLVE:
+				if(onHoldReason.equals(OnHoldReason.AWAITING_CHANGE)) {
+					changeRequest = command.getWorkNote();
+				}
+				state = resolvedState;
+				onHoldReason = null;
+				resolutionCode = command.getResolutionCode();
+				notes.add(command.getWorkNote());
+				break;
+			case CONFIRM:
+				throw new UnsupportedOperationException();
+			case REOPEN:
+				if(onHoldReason.equals(OnHoldReason.AWAITING_CHANGE)) {
+					changeRequest = command.getWorkNote();
+				}
+				onHoldReason = null;
+				notes.add(command.getWorkNote());
+				state = inProgressState;
+				break;
+			case CANCEL:
+				onHoldReason = null;
+				notes.add(command.getWorkNote());
+				state = canceledState;
+				cancellationCode = command.getCancellationCode();
+				break;
+			default:
 			}
-			
+
 		}
 		/**
 		 * Gets the name of the state
@@ -677,27 +677,27 @@ public class ManagedIncident {
 		@Override
 		public void updateState(Command command) {
 			switch(command.getCommand()) {
-				case INVESTIGATE:
-					state = inProgressState;
-					owner = command.getOwnerId();
-					notes.add(command.getWorkNote());
-					break;
-				case HOLD:
-					throw new UnsupportedOperationException();
-				case RESOLVE:
-					throw new UnsupportedOperationException();
-				case CONFIRM:
-					throw new UnsupportedOperationException();
-				case REOPEN:
-					throw new UnsupportedOperationException();
-				case CANCEL:
-					state = canceledState;
-					cancellationCode = command.getCancellationCode();
-					notes.add(command.getWorkNote());
-					break;
-				default:
+			case INVESTIGATE:
+				state = inProgressState;
+				owner = command.getOwnerId();
+				notes.add(command.getWorkNote());
+				break;
+			case HOLD:
+				throw new UnsupportedOperationException();
+			case RESOLVE:
+				throw new UnsupportedOperationException();
+			case CONFIRM:
+				throw new UnsupportedOperationException();
+			case REOPEN:
+				throw new UnsupportedOperationException();
+			case CANCEL:
+				state = canceledState;
+				cancellationCode = command.getCancellationCode();
+				notes.add(command.getWorkNote());
+				break;
+			default:
 			}
-			
+
 		}
 		/**
 		 * Gets the name of the state
@@ -746,7 +746,7 @@ public class ManagedIncident {
 				break;
 			default:
 			}
-			
+
 		}
 		/**
 		 * Gets the name of the state
@@ -773,16 +773,16 @@ public class ManagedIncident {
 		public void updateState(Command command) {
 			switch(command.getCommand()) {
 			case INVESTIGATE:
-				
+
 				throw new UnsupportedOperationException();
 			case HOLD:
-				
+
 				throw new UnsupportedOperationException();
 			case RESOLVE:
-				
+
 				throw new UnsupportedOperationException();
 			case CONFIRM:
-				
+
 				throw new UnsupportedOperationException();
 			case REOPEN:
 				state = inProgressState;
@@ -790,12 +790,12 @@ public class ManagedIncident {
 				resolutionCode = null;
 				break;
 			case CANCEL:
-				
+
 				throw new UnsupportedOperationException();
 			default:
-				
+
 			}
-			
+
 		}
 		/**
 		 * Gets the name of the state
@@ -835,7 +835,7 @@ public class ManagedIncident {
 				throw new UnsupportedOperationException();
 			default:
 			}
-			
+
 		}
 		/**
 		 * Gets the name of the state

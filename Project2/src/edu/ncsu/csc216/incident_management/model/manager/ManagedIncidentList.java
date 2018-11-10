@@ -44,8 +44,8 @@ public class ManagedIncidentList {
 	 */
 	public void addXMLIncidents(List<Incident> list) {
 		for(int i = 0; i < list.size(); i++) {
-			 ManagedIncident m = new ManagedIncident(list.get(i));
-			 incidents.add(m);
+			ManagedIncident m = new ManagedIncident(list.get(i));
+			incidents.add(m);
 		}
 		ManagedIncident.setCounter(incidents.get(incidents.size() - 1).getIncidentId() + 1);
 	}
@@ -100,12 +100,14 @@ public class ManagedIncidentList {
 	 * @param id the id of the incident to remove
 	 */
 	public void deleteIncidentById(int id) {
-		for(int i = 0; i < incidents.size(); i++) {
-			if(incidents.get(i).getIncidentId() == id) {
-				incidents.remove(i);
+		if(incidents.size() != 0) {
+			for(int i = 0; i < incidents.size(); i++) {
+				if(incidents.get(i).getIncidentId() == id) {
+					incidents.remove(i);
+				}
 			}
 		}
 	}
 
-	
+
 }
