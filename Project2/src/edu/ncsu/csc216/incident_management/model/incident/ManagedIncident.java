@@ -136,7 +136,7 @@ public class ManagedIncident {
 	 */
 	public ManagedIncident(Incident i) {
 		
-		this.incidentId = counter;
+		this.incidentId = i.getId();
 		incrementCounter();
 		this.caller = i.getCaller();
 		this.owner = i.getOwner();
@@ -356,7 +356,11 @@ public class ManagedIncident {
 	 * @return the incident's notes
 	 */
 	public String getNotesString() {
-		return notes.toString();
+		String s = "";
+		for(int i = 0; i < notes.size(); i++) {
+			s += notes.get(i) + "\n-------\n";
+		}
+		return s;
 	}
 	/**
 	 * Updates the incident with the given command

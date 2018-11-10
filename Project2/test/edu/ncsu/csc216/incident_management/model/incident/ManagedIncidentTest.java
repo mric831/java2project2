@@ -293,10 +293,10 @@ public class ManagedIncidentTest {
 	@Test
 	public void testGetNotesString() {
 		ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
-		String match = "[note]";
+		String match = "note\n-------\n";
 		assertEquals(m.getNotesString(), match);
 		Command c = new Command(CommandValue.INVESTIGATE, "test", null, null, null, "note2");
-		match = "[note, note2]";
+		match = "note\n-------\nnote2\n-------\n";
 		m.update(c);
 		assertEquals(m.getNotesString(), match);
 		ManagedIncident.setCounter(0);
