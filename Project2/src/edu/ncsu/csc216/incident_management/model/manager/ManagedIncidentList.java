@@ -51,7 +51,7 @@ public class ManagedIncidentList {
 	}
 	/**
 	 * Get the list of managed incidents
-	 * @return
+	 * @return the list of managed incidents
 	 */
 	public List<ManagedIncident> getManagedIncidents(){
 		return incidents;
@@ -60,6 +60,7 @@ public class ManagedIncidentList {
 	 * Gets a list of managed incidents of the specified category
 	 * @param c the category that is being searched for
 	 * @return a list of managed incidents that fall under the provided category
+	 * @throws IllegalArgumentException if given a null category
 	 */
 	public List<ManagedIncident> getIncidentsByCategory(Category c){
 		if(c == null) {

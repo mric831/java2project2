@@ -61,7 +61,7 @@ public class ManagedIncident {
 	/** Counter to keep track of incidents */
 	private static int counter = 0;
 	/** All possible priorities */
-	public enum Priority { URGENT, HIGH, MEDIUM, LOW}
+	public enum Priority { URGENT, HIGH, MEDIUM, LOW }
 	/** All possible categories */
 	public enum Category { INQUIRY, SOFTWARE, HARDWARE, NETWORK, DATABASE }
 	/** New state */
@@ -95,6 +95,7 @@ public class ManagedIncident {
 	 * @param p the priority level of the incident
 	 * @param name the name of the incident
 	 * @param workNote the note describing the incident
+	 * @throws IllegalArgumentException if given invalid parameters
 	 */
 	public ManagedIncident(String caller, Category c, Priority p, String name, String workNote) {
 		if(caller == null || caller.equals("")) {
@@ -389,7 +390,7 @@ public class ManagedIncident {
 			case CANCELED_NAME:
 				canceledState.updateState(c);
 				break;
-				
+			default:	
 		}
 	}
 	/**
@@ -429,7 +430,12 @@ public class ManagedIncident {
 	public static void setCounter(int i ) {
 		counter = i;
 	}
-	
+	/**
+	 * Helper method that converts strings to enums
+	 * @param s string to convert
+	 * @return the enum result
+	 * @throws IllegalArgumentException if the string coincides with no enum
+	 */
 	private Category convertCategory(String s) {
 		if(s.equals(C_INQUIRY)) {
 			return Category.INQUIRY;
@@ -445,7 +451,12 @@ public class ManagedIncident {
 			throw new IllegalArgumentException();
 		}
 	}
-	
+	/**
+	 * Helper method that converts strings to enums
+	 * @param s string to convert
+	 * @return the enum result
+	 * @throws IllegalArgumentException if the string coincides with no enum
+	 */
 	private Priority convertPriority(String s) {
 		if(s.equals(P_URGENT)) {
 			return Priority.URGENT;
@@ -459,7 +470,12 @@ public class ManagedIncident {
 			throw new IllegalArgumentException();
 		}
 	}
-	
+	/**
+	 * Helper method that converts strings to enums
+	 * @param s string to convert
+	 * @return the enum result
+	 * @throws IllegalArgumentException if the string coincides with no enum
+	 */
 	private OnHoldReason convertOnHoldReason(String s) {
 		if(s == null) {
 			return null;
@@ -473,7 +489,12 @@ public class ManagedIncident {
 			return null;
 		}
 	}
-	
+	/**
+	 * Helper method that converts strings to enums
+	 * @param s string to convert
+	 * @return the enum result
+	 * @throws IllegalArgumentException if the string coincides with no enum
+	 */
 	private ResolutionCode convertResolutionCode(String s) {
 		if(s == null) {
 			return null;
@@ -489,7 +510,12 @@ public class ManagedIncident {
 			return null;
 		}
 	}
-	
+	/**
+	 * Helper method that converts strings to enums
+	 * @param s string to convert
+	 * @return the enum result
+	 * @throws IllegalArgumentException if the string coincides with no enum
+	 */
 	private CancellationCode convertCancellationCode(String s) {
 		if(s == null) {
 			return null;
@@ -503,7 +529,12 @@ public class ManagedIncident {
 			return null;
 		}
 	}
-	
+	/**
+	 * Helper method that converts strings to incident states
+	 * @param s the string to convert
+	 * @return the state result
+	 * @throws IllegalArgumentException if the string coincides with no state
+	 */
 	private IncidentState convertState(String s) {
 		if(s == null) {
 			throw new IllegalArgumentException();
@@ -532,6 +563,7 @@ public class ManagedIncident {
 		/**
 		 * Changes the current state based on the provided command
 		 * @param command the command that's going to change the state
+		 * @throws UnsupportedOperationException if the CommandValue is not a valid action for the given state.
 		 */
 		@Override
 		public void updateState(Command command) {
@@ -565,7 +597,7 @@ public class ManagedIncident {
 					state = canceledState;
 					cancellationCode = command.getCancellationCode();
 					break;
-			
+				default:
 			}
 			
 		}
@@ -588,6 +620,7 @@ public class ManagedIncident {
 		/**
 		 * Changes the current state based on the provided command
 		 * @param command the command that's going to change the state
+		 * @throws UnsupportedOperationException if the CommandValue is not a valid action for the given state.
 		 */
 		@Override
 		public void updateState(Command command) {
@@ -617,7 +650,7 @@ public class ManagedIncident {
 				cancellationCode = command.getCancellationCode();
 				notes.add(command.getWorkNote());
 				break;
-			
+			default:
 			}
 		}
 		/**
@@ -639,6 +672,7 @@ public class ManagedIncident {
 		/**
 		 * Changes the current state based on the provided command
 		 * @param command the command that's going to change the state
+		 * @throws UnsupportedOperationException if the CommandValue is not a valid action for the given state.
 		 */
 		@Override
 		public void updateState(Command command) {
@@ -661,7 +695,7 @@ public class ManagedIncident {
 					cancellationCode = command.getCancellationCode();
 					notes.add(command.getWorkNote());
 					break;
-				
+				default:
 			}
 			
 		}
@@ -680,10 +714,11 @@ public class ManagedIncident {
 	 * @author Max Richgruber
 	 *
 	 */
-	public class InProgressState implements IncidentState{
+	public class InProgressState implements IncidentState {
 		/**
 		 * Changes the current state based on the provided command
 		 * @param command the command that's going to change the state
+		 * @throws UnsupportedOperationException if the CommandValue is not a valid action for the given state.
 		 */
 		@Override
 		public void updateState(Command command) {
@@ -709,7 +744,7 @@ public class ManagedIncident {
 				cancellationCode = command.getCancellationCode();
 				notes.add(command.getWorkNote());
 				break;
-			
+			default:
 			}
 			
 		}
@@ -732,6 +767,7 @@ public class ManagedIncident {
 		/**
 		 * Changes the current state based on the provided command
 		 * @param command the command that's going to change the state
+		 * @throws UnsupportedOperationException if the CommandValue is not a valid action for the given state.
 		 */
 		@Override
 		public void updateState(Command command) {
@@ -756,7 +792,7 @@ public class ManagedIncident {
 			case CANCEL:
 				
 				throw new UnsupportedOperationException();
-			
+			default:
 				
 			}
 			
@@ -780,6 +816,7 @@ public class ManagedIncident {
 		/**
 		 * Changes the current state based on the provided command
 		 * @param command the command that's going to change the state
+		 * @throws UnsupportedOperationException if the CommandValue is not a valid action for the given state.
 		 */
 		@Override
 		public void updateState(Command command) {
@@ -796,7 +833,7 @@ public class ManagedIncident {
 				throw new UnsupportedOperationException();
 			case CANCEL:
 				throw new UnsupportedOperationException();
-			
+			default:
 			}
 			
 		}

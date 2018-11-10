@@ -53,6 +53,7 @@ public class Command {
 	 * @param r Code for the incident's resolution
 	 * @param c Code for the incident's cancellation
 	 * @param note Note describing the incident
+	 * @throws IllegalArgumentException if given invalid parameters
 	 */
 	public Command(CommandValue v, String id, OnHoldReason o, ResolutionCode r, CancellationCode c, String note) {
 		if(v == null) {

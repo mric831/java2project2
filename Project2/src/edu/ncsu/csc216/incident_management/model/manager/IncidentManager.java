@@ -39,6 +39,7 @@ public class IncidentManager {
 	/**
 	 * Saves all of the incidents on the list to an external file 
 	 * @param fileName name of the file to save to
+	 * @throws IllegalArgumentException for invalid file names
 	 */
 	public void saveManagedIncidentsToFile(String fileName)  {
 		IncidentWriter writer = null;
@@ -57,6 +58,7 @@ public class IncidentManager {
 	/**
 	 * Loads in incidents from a file to the list
 	 * @param fileName name of the file to load in from
+	 * @throws IllegalArgumentException for invalid file names
 	 */
 	public void loadManagedIncidentsFromFile(String fileName) {
 		try {
@@ -79,7 +81,7 @@ public class IncidentManager {
 	public String[][] getManagedIncidentsAsArray(){
 		List<ManagedIncident> temp = incidentList.getManagedIncidents();
 		String[][] s = new String[temp.size()][5];
-		for(int i = 0; i <temp.size(); i++) {
+		for(int i = 0; i < temp.size(); i++) {
 			s[i][0] = "" + temp.get(i).getIncidentId();
 			s[i][1] = temp.get(i).getCategoryString();
 		    s[i][2] = temp.get(i).getState().getStateName();
@@ -92,6 +94,7 @@ public class IncidentManager {
 	 * Returns a specific category of managed incidents as an array                
 	 * @param c the category of incidents that are being searched for
 	 * @return array of managed incidents of the specified category
+	 * @throws IllegalArgumentException if given a null category
 	 */
 	public String[][] getManagedIncidentsAsArrayByCategory(Category c){
 		if(c == null) {
@@ -126,7 +129,7 @@ public class IncidentManager {
 	}
 	/**
 	 * Deletes a specified incident from the list
-	 * @param id the ide of the incident to remove
+	 * @param id the id of the incident to remove
 	 */
 	public void deleteManagedIncidentById(int id) {
 		incidentList.deleteIncidentById(id);
@@ -138,7 +141,6 @@ public class IncidentManager {
 	 * @param p the priority level of the incident
 	 * @param name the name of the incident
 	 * @param workNote the note describing the incident
-	 * @return the index in the list the added incident was assigned
 	 */
 	public void addManagedIncidentToList(String caller, Category c, Priority p, String name, String workNote) {
 		incidentList.addIncident(caller, c, p, name, workNote);
