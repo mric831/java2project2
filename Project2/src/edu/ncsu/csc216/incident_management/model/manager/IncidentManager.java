@@ -43,7 +43,7 @@ public class IncidentManager {
 	public void saveManagedIncidentsToFile(String fileName)  {
 		IncidentWriter writer = null;
 		writer = new IncidentWriter(fileName);
-		for(int i = 0; i < incidentList.getManagedIncidents().size(); i++) {
+		for(int i = 1; i < incidentList.getManagedIncidents().size(); i++) {
 			ManagedIncident m = incidentList.getIncidentById(i);
 			writer.addItem(m.getXMLIncident());
 		}

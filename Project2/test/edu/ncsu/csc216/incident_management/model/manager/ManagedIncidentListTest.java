@@ -86,7 +86,7 @@ public class ManagedIncidentListTest {
 		ManagedIncidentList list = new ManagedIncidentList();
 		list.addIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
 		list.addIncident("caller2", Category.HARDWARE, Priority.HIGH, "name2", "note2");
-		assertEquals(list.getIncidentById(1).getCaller(), "caller2");
+		assertEquals(list.getIncidentById(2).getCaller(), "caller2");
 	}
 	/**
 	 * Tests method that executes a command on the list
@@ -97,7 +97,7 @@ public class ManagedIncidentListTest {
 		list.addIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
 		Command c = new Command(CommandValue.CANCEL, "owner", null, null, CancellationCode.DUPLICATE, "note");
 		list.executeCommand(0, c);
-		assertEquals(list.getIncidentById(0).getCancellationCodeString(), "Duplicate");
+		assertEquals(list.getIncidentById(1).getCancellationCodeString(), "Duplicate");
 	}
 	/**
 	 * Tests method that deletes a specific incident from list
@@ -106,7 +106,7 @@ public class ManagedIncidentListTest {
 	public void testDeleteIncidentById() {
 		ManagedIncidentList list = new ManagedIncidentList();
 		list.addIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
-		list.deleteIncidentById(0);
+		list.deleteIncidentById(1);
 		assertEquals(list.getManagedIncidents().size(), 0);
 	}
 

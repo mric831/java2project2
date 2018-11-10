@@ -75,9 +75,9 @@ public class ManagedIncidentTest {
 			assertNotNull(e);
 		}
 		ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
-		assertEquals(m.getIncidentId(), 0);
+		assertEquals(m.getIncidentId(), 1);
 		ManagedIncident m2 = new ManagedIncident("caller2", Category.DATABASE, Priority.HIGH, "name2", "note2");
-		assertEquals(m2.getIncidentId(), 1);
+		assertEquals(m2.getIncidentId(), 2);
 		ManagedIncident.setCounter(0);
 		
 	}
@@ -106,12 +106,12 @@ public class ManagedIncidentTest {
 	public void testIncrementCounter() {
 		ManagedIncident.incrementCounter();
 		ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
-		assertEquals(m.getIncidentId(), 1);
+		assertEquals(m.getIncidentId(), 2);
 		ManagedIncident.incrementCounter();
 		ManagedIncident.incrementCounter();
 		ManagedIncident.incrementCounter();
 		ManagedIncident m2 = new ManagedIncident("caller2", Category.DATABASE, Priority.HIGH, "name2", "note2");
-		assertEquals(m2.getIncidentId(), 5);
+		assertEquals(m2.getIncidentId(), 6);
 		ManagedIncident.setCounter(0);
 	}
 	/**
@@ -120,7 +120,7 @@ public class ManagedIncidentTest {
 	@Test
 	public void testGetIncidentId() {
 		ManagedIncident m = new ManagedIncident("caller", Category.DATABASE, Priority.HIGH, "name", "note");
-		assertEquals(m.getIncidentId(), 0);
+		assertEquals(m.getIncidentId(), 1);
 		ManagedIncident.setCounter(0);
 	}
 	/**
