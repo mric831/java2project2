@@ -560,6 +560,7 @@ public class ManagedIncident {
 					state = inProgressState;
 					break;
 				case CANCEL:
+					onHoldReason = null;
 					notes.add(command.getWorkNote());
 					state = canceledState;
 					cancellationCode = command.getCancellationCode();
